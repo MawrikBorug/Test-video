@@ -1,0 +1,28 @@
+{
+  "kind": "LOCAL_RENDER_CONTAINER_PREPARATION",
+  "at": "2026-10-24T13:00:54.457651+00:00",
+  "dockerBuild": "PASS",
+  "runProfile": {
+    "memoryBytes": 536870912,
+    "cpus": 0.1
+  },
+  "healthHttp": 200,
+  "uiHttp": 200,
+  "corsPreflightHttp": 200,
+  "health": {
+    "version": "torrent-1",
+    "transport": "libtorrent TCP/UDP",
+    "transcoder": "FFmpeg H.264/AAC",
+    "active": 0,
+    "ffmpeg": true,
+    "ffprobe": true,
+    "cacheBytes": 268435456,
+    "sessionLimit": 1,
+    "serverless": false,
+    "readiness": "runtime-present; torrent-egress-and-real-playback-require-a-probe"
+  },
+  "sourceTreeDirtyDuringBuild": true,
+  "actualRenderDeployment": "NOT_RUN",
+  "externalTorrentPeersOnRender": "NOT_RUN",
+  "commercialPlaybackAccepted": false
+}

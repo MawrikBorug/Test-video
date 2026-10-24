@@ -1,0 +1,14 @@
+.git
+node_modules
+dist
+.venv
+.vercel
+.env*
+scratch
+**/__pycache__
+**/*.pyc
+test-results
+playwright-report
+tests
+evidence/**
+!evidence/verification.json

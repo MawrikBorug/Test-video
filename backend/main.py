@@ -19,6 +19,7 @@ PROVIDERS={'comet':'https://comet.feels.legal','torrentsdb':'https://torrentsdb.
 STORE=pathlib.Path(tempfile.mkdtemp(prefix='test-video-'))
 SECRET=os.environ.get('PLAYBACK_SECRET','').encode() or secrets.token_bytes(32)
 MAX_BYTES=int(os.environ.get('TORRENT_CACHE_BYTES',str(256*1024**2 if os.environ.get('VERCEL') else 12*1024**3)))
+MAX_SESSIONS=max(1,int(os.environ.get('TORRENT_MAX_SESSIONS','2')))
 engines={};logs=[];lock=asyncio.Lock();http_cooldowns={}
 def engine_key(data):return f'{data["hash"]}:{data.get("season")}:{data.get("episode")}'
 
@@ -74,7 +75,7 @@ async def health():
     from .media import FFMPEG,FFPROBE
     return {'version':'torrent-1','transport':'libtorrent TCP/UDP','transcoder':'FFmpeg H.264/AAC',
             'active':len(engines),'ffmpeg':pathlib.Path(FFMPEG).exists(),'ffprobe':pathlib.Path(FFPROBE).exists(),
-            'cacheBytes':MAX_BYTES,'serverless':bool(os.environ.get('VERCEL')),
+            'cacheBytes':MAX_BYTES,'sessionLimit':MAX_SESSIONS,'serverless':bool(os.environ.get('VERCEL')),
             'readiness':'runtime-present; torrent-egress-and-real-playback-require-a-probe'}
 
 @app.get('/api/search/{provider}/{key}')
@@ -116,7 +117,7 @@ async def load(data,probe=True):
                 if time.monotonic()-old.last>300:
                     if getattr(old,'raw_server',None):old.raw_server.shutdown()
                     old.close();engines.pop(oldkey,None)
-            if len(engines)>=2:raise Refusal('EXECUTOR_CAPACITY')
+            if len(engines)>=MAX_SESSIONS:raise Refusal('EXECUTOR_CAPACITY')
             magnet='magnet:?xt=urn:btih:'+data['hash']
             for tr in ['udp://tracker.opentrackr.org:1337/announce','udp://open.stealth.si:80/announce','https://tracker.tamersunion.org:443/announce']:
                 from urllib.parse import quote

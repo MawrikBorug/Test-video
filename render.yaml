@@ -1,0 +1,20 @@
+# Experimental free runtime. No paid database, disk, worker or upgrade.
+services:
+  - type: web
+    name: test-video-executor
+    runtime: docker
+    repo: https://github.com/MawrikBorug/Test-video
+    branch: main
+    plan: free
+    region: frankfurt
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    healthCheckPath: /api/health
+    autoDeployTrigger: commit
+    envVars:
+      - key: PLAYBACK_SECRET
+        generateValue: true
+      - key: TORRENT_CACHE_BYTES
+        value: "268435456"
+      - key: TORRENT_MAX_SESSIONS
+        value: "1"
