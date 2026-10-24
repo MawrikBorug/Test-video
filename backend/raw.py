@@ -22,7 +22,11 @@ def start_raw(torrent):
             if not body:return
             try:
                 for block in torrent.read(start,end):self.wfile.write(block)
-            except (BrokenPipeError,ConnectionResetError,Refusal):self.close_connection=True
+            except Refusal as e:
+                torrent.last_read_error=e.code
+                print('TORRENT_RANGE_READ_FAILED',e.code,flush=True)
+                self.close_connection=True
+            except (BrokenPipeError,ConnectionResetError):self.close_connection=True
     server=http.server.ThreadingHTTPServer(('127.0.0.1',0),Handler)
     server.daemon_threads=True
     thread=threading.Thread(target=server.serve_forever,daemon=True);thread.start()

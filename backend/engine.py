@@ -37,7 +37,7 @@ class Torrent:
             for a in self.session.pop_alerts():
                 if isinstance(a,lt.read_piece_alert):
                     with self._lock:
-                        if not a.error:
+                        if a.error.value()==0:
                             self._cache[a.piece]=bytes(a.buffer)
                             while len(self._cache)>48:self._cache.popitem(last=False)
                         e=self._events.get(a.piece)
