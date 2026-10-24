@@ -100,9 +100,13 @@ class Torrent:
             time.sleep(.05)
         with self._lock:
             if index in self._cache:return self._cache[index]
-            event=self._events.setdefault(index,threading.Event())
+            event=self._events.get(index)
+            if event is None or event.is_set():
+                event=threading.Event();self._events[index]=event
         self.handle.read_piece(index)
-        if not event.wait(max(1,until-time.monotonic())):raise Refusal('PIECE_READ_TIMEOUT')
+        while not event.wait(.1):
+            if self.closed:raise Refusal('CANCELLED')
+            if time.monotonic()>until:raise Refusal('PIECE_READ_TIMEOUT')
         with self._lock:
             data=self._cache.get(index)
         if data is None:raise Refusal('PIECE_READ_FAILED')
