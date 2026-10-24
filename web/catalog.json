@@ -1,0 +1,208 @@
+[
+  {
+    "key": "dandadan",
+    "title": "Dandadan",
+    "imdb": "tt30217403",
+    "year": 2024,
+    "type": "series",
+    "ru": "Дандадан",
+    "queries": [
+      [
+        1,
+        1
+      ],
+      [
+        1,
+        2
+      ],
+      [
+        2,
+        1
+      ],
+      [
+        2,
+        2
+      ]
+    ],
+    "note": ""
+  },
+  {
+    "key": "frieren",
+    "title": "Frieren: Beyond Journey's End",
+    "imdb": "tt22248376",
+    "year": 2023,
+    "type": "series",
+    "ru": "Фрирен",
+    "queries": [
+      [
+        1,
+        1
+      ],
+      [
+        1,
+        2
+      ],
+      [
+        2,
+        1
+      ],
+      [
+        2,
+        2
+      ]
+    ],
+    "note": ""
+  },
+  {
+    "key": "deathnote",
+    "title": "Death Note",
+    "imdb": "tt0877057",
+    "year": 2006,
+    "type": "series",
+    "ru": "Тетрадь смерти",
+    "queries": [
+      [
+        1,
+        1
+      ],
+      [
+        1,
+        2
+      ]
+    ],
+    "note": "Аниме 2006"
+  },
+  {
+    "key": "interstellar",
+    "title": "Interstellar",
+    "imdb": "tt0816692",
+    "year": 2014,
+    "type": "movie",
+    "ru": "Интерстеллар",
+    "queries": [
+      [
+        null,
+        null
+      ]
+    ],
+    "note": ""
+  },
+  {
+    "key": "fallout",
+    "title": "Fallout",
+    "imdb": "tt12637874",
+    "year": 2024,
+    "type": "series",
+    "ru": "Фаллаут",
+    "queries": [
+      [
+        1,
+        1
+      ],
+      [
+        1,
+        2
+      ],
+      [
+        2,
+        1
+      ],
+      [
+        2,
+        2
+      ]
+    ],
+    "note": ""
+  },
+  {
+    "key": "breakingbad",
+    "title": "Breaking Bad",
+    "imdb": "tt0903747",
+    "year": 2008,
+    "type": "series",
+    "ru": "Во все тяжкие",
+    "queries": [
+      [
+        1,
+        1
+      ],
+      [
+        1,
+        2
+      ],
+      [
+        2,
+        1
+      ],
+      [
+        2,
+        2
+      ]
+    ],
+    "note": ""
+  },
+  {
+    "key": "spiderman",
+    "title": "Spider-Man: Far from Home",
+    "imdb": "tt6320628",
+    "year": 2019,
+    "type": "movie",
+    "ru": "Человек-паук: Вдали от дома",
+    "queries": [
+      [
+        null,
+        null
+      ]
+    ],
+    "note": ""
+  },
+  {
+    "key": "hailmary",
+    "title": "Project Hail Mary",
+    "imdb": "tt12042730",
+    "year": 2026,
+    "type": "movie",
+    "ru": "Проект «Аве Мария»",
+    "queries": [
+      [
+        null,
+        null
+      ]
+    ],
+    "note": ""
+  },
+  {
+    "key": "shrek",
+    "title": "Shrek",
+    "imdb": "tt0126029",
+    "year": 2001,
+    "type": "movie",
+    "ru": "Шрек",
+    "queries": [
+      [
+        null,
+        null
+      ]
+    ],
+    "note": "Первый фильм, 2001"
+  },
+  {
+    "key": "slovo",
+    "title": "The Boy's Word: Blood on the Asphalt",
+    "imdb": "tt28429213",
+    "year": 2023,
+    "type": "series",
+    "ru": "Слово пацана",
+    "queries": [
+      [
+        1,
+        1
+      ],
+      [
+        1,
+        2
+      ]
+    ],
+    "note": ""
+  }
+]

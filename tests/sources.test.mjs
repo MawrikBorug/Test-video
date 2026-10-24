@@ -1,0 +1,5 @@
+import {test} from 'node:test';import assert from 'node:assert/strict';import {normalize,merge,videoId} from '../web/sources.mjs';
+const provider={id:'comet',name:'Comet'};
+test('synthetic: movie notice/iframe never becomes torrent candidate',()=>{assert.equal(normalize({externalUrl:'https://example.com',name:'notice'},{key:'shrek'},provider),null)});
+test('synthetic: rejects wrong Death Note adaptation and Shrek sequel',()=>{const infoHash='a'.repeat(40);assert.equal(normalize({infoHash,title:'Death Note 2017 1080p'},{key:'deathnote'},provider),null);assert.equal(normalize({infoHash,title:'Shrek 2 1080p'},{key:'shrek'},provider),null)});
+test('synthetic: episode request remains exact, duplicate provenance retained',()=>{assert.equal(videoId({imdb:'tt0877057',type:'series'},1,2),'tt0877057:1:2');const a=normalize({infoHash:'b'.repeat(40),fileIdx:27,title:'Death Note 2006 rus 1080p'},{key:'deathnote'},provider);const b={...a,providers:['TorrentsDB']};const j=merge([a,b]);assert.equal(j.length,1);assert.deepEqual(j[0].providers,['Comet','TorrentsDB']);assert.equal(j[0].metadataVerified,false)});
