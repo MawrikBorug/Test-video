@@ -1,5 +1,5 @@
 {
-  "at": "2026-10-24T12:05:17.144098+00:00",
+  "at": "2026-10-24T12:16:43.168597+00:00",
   "kind": "VERIFICATION_SUMMARY",
   "selectionPlaybackAccepted": false,
   "commercialTitlesWithVerifiedPlayback": 0,
@@ -83,12 +83,13 @@
     },
     {
       "work": "shrek",
-      "attempts": 3,
-      "latestError": "METADATA_TIMEOUT",
-      "metadataVerified": false,
+      "attempts": 4,
+      "latestError": "PIECE_TIMEOUT",
+      "metadataVerified": true,
       "peers": 0,
       "receivedBytes": 0,
-      "played": false
+      "played": false,
+      "metadataSource": "itorrents-net"
     },
     {
       "work": "slovo",

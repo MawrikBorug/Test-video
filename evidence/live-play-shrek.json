@@ -148,5 +148,115 @@
     "segments": [],
     "playbackInBrowser": "NOT_RUN",
     "physicalIPhone": "NOT_RUN"
+  },
+  {
+    "base": "https://test-video-taupe.vercel.app",
+    "sourceBuild": {
+      "version": "torrent-1",
+      "sha": "07448dc96091c289fbc00f848f6c07cdefefe10b",
+      "builtAt": "2026-10-24T12:10:24.681Z",
+      "transport": "torrent-only",
+      "iframe": false
+    },
+    "kind": "LIVE_DEPLOYED_TORRENT",
+    "at": "2026-10-24T12:11:42Z",
+    "request": {
+      "work": "shrek",
+      "season": 1,
+      "episode": 1,
+      "hash": "d41689639e37cb6604229e1e825cb24060f5ed18",
+      "provider": "comet",
+      "fileIdx": null
+    },
+    "http": 422,
+    "elapsedSeconds": 58.11,
+    "result": {
+      "error": "PIECE_TIMEOUT",
+      "diagnostics": {
+        "infoHash": "d41689639e37cb6604229e1e825cb24060f5ed18",
+        "peers": 0,
+        "seeds": 0,
+        "receivedBytes": 0,
+        "downloadBytesPerSecond": 0,
+        "verifiedPieces": 0,
+        "metadataVerified": true,
+        "file": {
+          "index": 0,
+          "path": "Шрек. - Shrek.2001.1080p.BluRay.AC3.x264..mkv",
+          "size": 2822327115
+        },
+        "metadataEvidence": {
+          "source": "itorrents-net",
+          "hashChecked": true,
+          "freshNetworkResponse": true,
+          "attempts": [
+            {
+              "host": "itorrents",
+              "http": 301
+            }
+          ]
+        },
+        "dhtNodes": 0,
+        "listenPortReady": true,
+        "alertCounts": {
+          "log_alert": 20,
+          "listen_succeeded_alert": 4,
+          "torrent_added_alert": 1,
+          "torrent_log_alert": 263,
+          "add_torrent_alert": 1,
+          "state_changed_alert": 2,
+          "torrent_finished_alert": 1,
+          "torrent_checked_alert": 1,
+          "tracker_announce_alert": 12,
+          "cache_flushed_alert": 1,
+          "file_prio_alert": 2,
+          "dht_log_alert": 1,
+          "tracker_error_alert": 12,
+          "stats_alert": 55
+        },
+        "trackerErrors": [
+          {
+            "code": 180,
+            "message": "skipping tracker announce (unreachable)"
+          },
+          {
+            "code": 180,
+            "message": "skipping tracker announce (unreachable)"
+          },
+          {
+            "code": 180,
+            "message": "skipping tracker announce (unreachable)"
+          },
+          {
+            "code": 180,
+            "message": "skipping tracker announce (unreachable)"
+          },
+          {
+            "code": 16,
+            "message": "Device or resource busy"
+          },
+          {
+            "code": 16,
+            "message": "Device or resource busy"
+          }
+        ],
+        "httpsDiscovery": [
+          {
+            "host": "tracker.tamersunion.org",
+            "error": "HTTP_NETWORK_OR_TIMEOUT",
+            "peersReported": null
+          },
+          {
+            "host": "tracker.gbitt.info",
+            "error": "HTTP_NETWORK_OR_TIMEOUT",
+            "peersReported": null
+          }
+        ],
+        "transport": "BitTorrent TCP/UDP → libtorrent → FFmpeg → HLS"
+      }
+    },
+    "segments": [],
+    "playbackInBrowser": "NOT_RUN",
+    "physicalIPhone": "NOT_RUN"
   }
 ]

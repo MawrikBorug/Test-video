@@ -36,6 +36,7 @@ async function selectWork(work){
  await stop();state.work=work;state.season=1;state.episode=1;state.episodes=[];state.candidates=[];state.active=null;state.queue=[];
  for(const el of $('works').children){const selected=el.dataset.key===work.key;el.classList.toggle('active',selected);el.setAttribute('aria-pressed',String(selected));}
  $('work-title').textContent=(state.dataMode==='live'?'':'КОНТРОЛЬ · ')+work.ru;$('work-meta').textContent=`${work.type==='series'?'СЕРИАЛ':'ФИЛЬМ'} / ${work.year} / ${work.imdb}`;$('work-note').textContent=work.note||work.title;
+ $('search').disabled=false;
  for(const s of ['search','file','audio','video'])step(s,'');controls();renderCandidates();$('auto').disabled=true;status('Выберите сезон и серию, затем найдите источники.');
  const generation=state.generation;
  try{const data=state.ready?await request('/api/episodes/'+work.key):await jsonRequest(`https://v3-cinemeta.strem.io/meta/${work.type}/${work.imdb}.json`).then(j=>({episodes:(j.meta?.videos||[]).filter(e=>e.season>0)}));if(generation!==state.generation)return;state.episodes=data.episodes.filter(e=>Number.isInteger(e.episode)&&Number.isInteger(e.season));controls();log('EPISODE_CATALOG',{work:work.key,episodes:state.episodes.length});}
@@ -128,11 +129,12 @@ $('export').onclick=()=>{const report={schemaVersion:1,build:__BUILD_SHA__,expor
 $('executor-url').value=executorBase;
 $('executor-save').onclick=async()=>{const value=$('executor-url').value.trim().replace(/\/$/,'');try{if(value){const u=new URL(value);if(u.protocol!=='https:'||u.username||u.password||u.search||u.hash||u.pathname!=='/')throw new Error('Нужен HTTPS-адрес корня сервера без пароля и параметров.')}await stop();executorBase=value;localStorage.setItem('test-video.executor.v1',value);$('health').replaceChildren();await init();}catch(e){status(safeError(e))}};
 async function init(){
+ const initialGeneration=state.generation;
  $('build').textContent=__BUILD_SHA__.slice(0,8);try{state.log=JSON.parse(localStorage.getItem('test-video.log.v1')||'[]').slice(-200)}catch{}
  try{const h=await request('/api/health',{timeout:12000});state.dataMode=h.control?'CONTROL_SYNTHETIC_SEARCH_REAL_TCP_MEDIA':'live';state.ready=!!h.ffmpeg&&!!h.ffprobe;$('connection').textContent=h.control?'Контрольный исполнитель':state.ready?'Исполнитель доступен':'FFmpeg недоступен';$('connection').className='badge '+(state.ready?'ok':'warn');$('overall').textContent=state.ready?'Торрент-исполнитель запущен':'Исполнитель не готов';$('environment').textContent=state.ready?'Библиотеки готовы. Получение байтов и просмотр проверяются отдельно для каждой раздачи.':'Нужна работающая серверная среда с libtorrent и FFmpeg.';for(const text of [h.control?'CONTROL · своё видео / синтетическая выдача':'LIVE · настоящие поставщики',h.transport,h.transcoder,'Кэш: '+(h.cacheBytes/1048576).toFixed(0)+' МиБ',h.serverless?'Vercel Function · cold start возможен':'Серверный процесс']){const span=document.createElement('span');span.textContent=text;$('health').append(span)}log('EXECUTOR_RUNTIME',h);}
  catch(e){$('connection').textContent='Исполнитель недоступен';$('connection').className='badge warn';$('overall').textContent='Видео пока заблокировано';$('environment').textContent='Поиск можно проверить. Сервер получения торрентов не ответил: причина в диагностике.';log('EXECUTOR_UNAVAILABLE',{error:safeError(e)});}
  try{const v=await jsonRequest('./verification.json',{timeout:5000});$('last-verification').textContent=`Последняя приёмка: ${v.commercialTitlesWithVerifiedPlayback}/${v.requiredTitles} произведений с подтверждённым воспроизведением. Поиск: ${v.liveSearchResponsesWithCandidates}/${v.liveSearchRequests}. Дата: ${v.at.slice(0,16).replace('T',' ')} UTC. Контрольный ролик учтён отдельно.`;if(!v.selectionPlaybackAccepted&&state.ready){$('overall').textContent='Просмотр подборки не подтверждён';$('environment').textContent='Библиотеки сервера запущены. В последнем медиапрогоне связь с торрент-пирами не установлена. Точные причины — ниже.'}}catch{}
- await selectWork(state.work);
+ if(state.generation===initialGeneration)await selectWork(state.work);
  if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js').catch(()=>{});
 }
 init();

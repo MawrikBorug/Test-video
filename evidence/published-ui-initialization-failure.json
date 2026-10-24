@@ -1,0 +1,8 @@
+{
+  "kind": "FAILED_LIVE_UI_AUTOMATION",
+  "error": "page.waitForFunction: Timeout 30000ms exceeded",
+  "boundary": "rapid Death Note S1E2 selection -> search -> candidate count",
+  "mediaTest": false,
+  "remediation": "Guard late initialization against replacing a later user selection; dedicated delayed-response regression test",
+  "followUp": "published-ui.json"
+}
