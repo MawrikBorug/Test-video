@@ -107,6 +107,11 @@ async def health():
 async def search(provider:str,key:str,season:int=1,episode:int=1):
     return await upstream(provider,key,season,episode)
 
+@app.get('/api/network-check')
+async def network_check():
+    from .netdiag import check
+    return await check()
+
 @app.get('/api/episodes/{key}')
 async def episodes(key:str):
     if key not in WORKS:raise Refusal('UNKNOWN_WORK')
