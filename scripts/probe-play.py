@@ -20,6 +20,7 @@ for key in keys:
  reports=json.loads(report_file.read_text()) if report_file.exists() else []
  for candidate in cs[:int(os.environ.get('PROBE_LIMIT','2'))]:
   body={'work':key,'season':row['season'] or 1,'episode':row['episode'] or 1,**{k:candidate[k] for k in ['hash','provider','fileIdx']}}
+  if os.environ.get('PROBE_ENGINE'):body['engine']=os.environ['PROBE_ENGINE']
   print('OPEN',key,candidate['hash'],candidate['title'][:150].replace('\n',' / '),flush=True)
   started=time.time();status,j=request('/api/open',body,timeout=170);ticket=j.pop('ticket',None)
   report={'base':BASE,'sourceBuild':request('/build-info.json')[1],'kind':'LIVE_DEPLOYED_TORRENT','at':time.strftime('%Y-%m-%dT%H:%M:%SZ',time.gmtime()),'request':body,'http':status,'elapsedSeconds':round(time.time()-started,2),'result':j,'segments':[],'playbackInBrowser':'NOT_RUN','physicalIPhone':'NOT_RUN'}

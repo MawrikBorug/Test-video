@@ -4,7 +4,7 @@ Stremio downloads the torrent; our existing verified file selection, ffprobe,
 FFmpeg, player, diagnostics and source-failure queue remain responsible for
 delivery. No Stremio application, iframe or arbitrary media URL is involved.
 """
-import asyncio, os, pathlib, re, secrets, shutil, time
+import asyncio, os, pathlib, re, secrets, shutil, time,tempfile,json
 from urllib.parse import urlparse,parse_qs
 import httpx
 import libtorrent as lt
@@ -12,7 +12,8 @@ from .engine import verified_file
 from .selection import Refusal
 
 BASE=os.environ.get('STREMIO_URL','http://127.0.0.1:11470').rstrip('/')
-STATE=pathlib.Path(os.environ.get('STREMIO_STATE_PATH','.runtime/stremio')).resolve()
+STATE=pathlib.Path(os.environ.get('STREMIO_STATE_PATH',str(pathlib.Path(tempfile.gettempdir())/'test-video-stremio') if os.environ.get('VERCEL') else '.runtime/stremio')).resolve()
+TRACKERS=json.loads((pathlib.Path(__file__).with_name('stremio-trackers.json')).read_text())
 
 class StremioTorrent:
     uses_stremio=True
@@ -26,10 +27,19 @@ class StremioTorrent:
         self.trackers=parse_qs(urlparse(magnet).query).get('tr',[])
         self.last=time.monotonic();self.closed=False;self.file=None;self.media=None
         self.upload_slots=None
+        self.memory_bounded_cache=False
         self.segments={};self.tasks={};self._stats=None;self._last_stats=0
         self.cache=STATE/'stremio-cache'/self.hash
 
+    def peer_sources(self):
+        urls=list(self.trackers)+TRACKERS
+        if self.metadata_blob:urls=[t.url for t in lt.torrent_info(self.metadata_blob).trackers()]+urls
+        return list(dict.fromkeys(['tracker:'+url for url in urls]+['dht:'+self.hash]))
+
     async def select(self,season=None,episode=None,claimed=None):
+        from .stremio_process import ensure
+        await ensure(BASE,STATE)
+        self.cache.mkdir(parents=True,exist_ok=True)
         # A supplied snapshot is always checked above. Without one Stremio
         # obtains BEP9 metadata; re-read its full cached info dictionary below
         # and independently verify the infohash and complete file ordering.
@@ -41,19 +51,16 @@ class StremioTorrent:
                     pending.write_bytes(self.metadata_blob);pending.replace(self.cache/'cache')
                 # EngineFS reads its own metadata cache before requesting BEP9.
                 # Explicit options also prevent unbounded upload on free hosts.
-                sources=['tracker:udp://tracker.opentrackr.org:1337/announce',
-                    'tracker:udp://open.stealth.si:80/announce','dht:'+self.hash]
-                sources=['tracker:'+url for url in self.trackers]+sources
-                if self.metadata_blob:
-                    sources=[('tracker:'+t.url) for t in lt.torrent_info(self.metadata_blob).trackers()]+sources
                 r=await client.post(f'{BASE}/{self.hash}/create',json={'path':str(self.cache),'uploads':0,
-                    'peerSearch':{'min':20,'max':80,'sources':sources},'connections':55})
+                    'peerSearch':{'min':20,'max':80,'sources':self.peer_sources()},'connections':55})
                 r.raise_for_status();j=r.json()
             except httpx.TimeoutException:raise Refusal('METADATA_TIMEOUT')
             except (httpx.HTTPError,ValueError):raise Refusal('STREMIO_ENGINE_UNAVAILABLE')
         if not isinstance(j,dict) or j.get('infoHash')!=self.hash:raise Refusal('TORRENT_HASH_MISMATCH')
         self.upload_slots=j.get('opts',{}).get('uploads')
         if self.upload_slots!=0:raise Refusal('STREMIO_UPLOAD_POLICY_NOT_APPLIED')
+        ring=j.get('opts',{}).get('circularBuffer',{})
+        self.memory_bounded_cache=ring.get('type')=='memory' and 0<int(ring.get('size',0))<=64*1024**2
         self._stats=j;self._last_stats=time.monotonic()
         for _ in range(40):
             if self.closed:raise Refusal('CANCELLED')
@@ -79,6 +86,7 @@ class StremioTorrent:
         return self.file
 
     def status(self):
+        from .stremio_process import diagnostics
         self.last=time.monotonic()
         if not self.closed:
             try:
@@ -88,12 +96,22 @@ class StremioTorrent:
                     self._stats=j;self._last_stats=time.monotonic()
             except (httpx.HTTPError,ValueError):pass
         j=self._stats or {}
+        discovery=[]
+        for source in j.get('sources',[]):
+            url=source.get('url','')
+            discovery.append({'kind':'dht' if url.startswith('dht:') else 'tracker',
+                'host':urlparse(url.removeprefix('tracker:')).hostname if not url.startswith('dht:') else None,
+                'peersFound':source.get('numFound'),'uniquePeersFound':source.get('numFoundUniq'),
+                'requests':source.get('numRequests')})
         return {'infoHash':self.hash,'peers':j.get('peers'),'seeds':None,
             'receivedBytes':j.get('downloaded'),'downloadBytesPerSecond':j.get('downloadSpeed'),
             'uploadedBytes':j.get('uploaded'),'uploadSlotsAppliedAtCreation':self.upload_slots,
+            'memoryBoundedCache':self.memory_bounded_cache,
+            'engineRuntime':diagnostics(),
             'metadataVerified':bool(self.file),'file':self.file,
             'metadataEvidence':getattr(self,'metadata_evidence',None),
             'connectionTries':j.get('connectionTries'),'queuedPeers':j.get('queued'),
+            'discovery':discovery,
             'statisticsAgeSeconds':round(time.monotonic()-self._last_stats,2) if self._stats else None,
             'pieceVerification':'Stremio torrent-stream SHA-1',
             'transport':'BitTorrent TCP/UDP → Stremio EngineFS → FFmpeg → HLS'}

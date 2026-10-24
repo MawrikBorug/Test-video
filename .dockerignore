@@ -6,6 +6,7 @@ dist
 .env*
 scratch
 .runtime
+backend/runtime
 **/__pycache__
 **/*.pyc
 test-results

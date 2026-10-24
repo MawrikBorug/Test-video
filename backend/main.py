@@ -25,7 +25,7 @@ SECRET=os.environ.get('PLAYBACK_SECRET','').encode() or secrets.token_bytes(32)
 MAX_BYTES=int(os.environ.get('TORRENT_CACHE_BYTES',str(256*1024**2 if os.environ.get('VERCEL') else 12*1024**3)))
 MAX_SESSIONS=max(1,int(os.environ.get('TORRENT_MAX_SESSIONS','1' if STREMIO_ENABLED else '2')))
 engines={};logs=[];lock=asyncio.Lock();http_cooldowns={}
-def engine_key(data):return f'{data["hash"]}:{data.get("season")}:{data.get("episode")}'
+def engine_key(data):return f'{data.get("engine")}:{data["hash"]}:{data.get("season")}:{data.get("episode")}'
 
 def event(code,**fields):
     row={'at':time.strftime('%Y-%m-%dT%H:%M:%SZ',time.gmtime()),'code':code,**fields}
@@ -92,11 +92,13 @@ async def health():
     from .media import FFMPEG,FFPROBE
     stremio_ready=None
     if STREMIO_ENABLED:
-        from .stremio import BASE
+        from .stremio import BASE,STATE
+        from .stremio_process import ensure
         try:
+            await ensure(BASE,STATE)
             async with httpx.AsyncClient(timeout=3) as c:
                 r=await c.get(BASE+'/heartbeat');stremio_ready=r.is_success and r.json().get('success') is True
-        except (httpx.HTTPError,ValueError):stremio_ready=False
+        except (httpx.HTTPError,ValueError,Refusal):stremio_ready=False
     return {'version':'torrent-1','transport':'Stremio EngineFS TCP/UDP' if STREMIO_ENABLED else 'libtorrent TCP/UDP','transcoder':'FFmpeg H.264/AAC',
             'active':len(engines),'ffmpeg':pathlib.Path(FFMPEG).exists(),'ffprobe':pathlib.Path(FFPROBE).exists(),
             'cacheBytes':MAX_BYTES,'sessionLimit':MAX_SESSIONS,'serverless':bool(os.environ.get('VERCEL')),
@@ -111,6 +113,14 @@ async def search(provider:str,key:str,season:int=1,episode:int=1):
 async def network_check():
     from .netdiag import check
     return await check()
+
+@app.get('/api/stremio-health')
+async def stremio_health():
+    from .stremio import BASE,STATE
+    from .stremio_process import ensure,diagnostics
+    try:await ensure(BASE,STATE)
+    except Refusal as e:return JSONResponse({'error':e.code,'diagnostics':diagnostics()},status_code=422)
+    return {'engine':'Stremio EngineFS','runtimeReady':True,'videoPlayback':'NOT_TESTED_BY_THIS_DIAGNOSTIC',**diagnostics()}
 
 @app.get('/api/episodes/{key}')
 async def episodes(key:str):
@@ -139,7 +149,7 @@ async def load(data,probe=True):
     key=engine_key(data)
     async with lock:
         t=engines.get(key)
-        if t and (t.closed or (not t.tasks and t.downloaded_bytes()>MAX_BYTES)):
+        if t and (t.closed or (not t.tasks and not getattr(t,'memory_bounded_cache',False) and t.downloaded_bytes()>MAX_BYTES)):
             if getattr(t,'raw_server',None):t.raw_server.shutdown()
             t.close();engines.pop(key,None);t=None
         if not t:
@@ -153,7 +163,14 @@ async def load(data,probe=True):
                 from urllib.parse import quote
                 magnet+='&tr='+quote(tr,safe='')
             metadata,metadata_evidence=await resolve_metadata(data['hash'])
-            t=Torrent(magnet,STORE,metadata=metadata)
+            factory=Torrent
+            if data.get('engine')=='stremio':
+                from .stremio import StremioTorrent
+                factory=StremioTorrent
+            elif data.get('engine')=='libtorrent':
+                from .engine import Torrent as Libtorrent
+                factory=Libtorrent
+            t=factory(magnet,STORE,metadata=metadata)
             t.metadata_evidence=metadata_evidence
             event('TORRENT_METADATA_ROUTE',infoHash=t.hash,**metadata_evidence)
             engines[key]=t
@@ -180,6 +197,7 @@ async def load(data,probe=True):
 @app.post('/api/open')
 async def open_source(request:Request):
     d=await request.json()
+    if d.get('engine') not in [None,'stremio','libtorrent']:raise Refusal('UNKNOWN_TORRENT_ENGINE')
     if not re.fullmatch(r'[a-f0-9]{40}',d.get('hash','')):raise Refusal('INVALID_HASH')
     w,_=work_query(d.get('work'),d.get('season',1),d.get('episode',1))
     # A viewer may only start a torrent present in the selected upstream's fresh
@@ -189,7 +207,7 @@ async def open_source(request:Request):
     if not matches:raise Refusal('HASH_NOT_IN_CURRENT_SEARCH')
     data={'hash':d['hash'],'work':w['key'],'season':d.get('season') if w['type']=='series' else None,
           'episode':d.get('episode') if w['type']=='series' else None,'fileIdx':d.get('fileIdx'),
-          'exp':int(time.time()+12*3600)}
+          'exp':int(time.time()+12*3600),'engine':d.get('engine')}
     t=await load(data)
     data['verifiedFile']=t.file['index']
     data['media']=t.media

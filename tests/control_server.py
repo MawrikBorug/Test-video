@@ -40,6 +40,7 @@ if os.environ.get('CONTROL_ENGINE')=='stremio':
    magnet+='&tr='+quote(f'http://127.0.0.1:{tracker.server_port}/announce',safe='')
    supplied=None if os.environ.get('CONTROL_BEP9')=='1' and info_hash in magnet else meta
    super().__init__(magnet,root,metadata=supplied)
+  def peer_sources(self):return [f'tracker:http://127.0.0.1:{tracker.server_port}/announce']
  main.Torrent=ControlStremio
 else:main.Torrent=ControlTorrent
 async def synthetic_search(*args,**kwargs):

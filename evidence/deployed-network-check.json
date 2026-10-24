@@ -1,0 +1,25 @@
+{
+  "at": "2026-10-24T17:24:44Z",
+  "kind": "DEPLOYED_RUNTIME_NETWORK_CHECK",
+  "serverless": true,
+  "proxyConfigured": false,
+  "managedNetworkPolicy": {
+    "present": false
+  },
+  "nodePresent": false,
+  "nodeVersion": null,
+  "videoPlayback": "NOT_TESTED_BY_THIS_DIAGNOSTIC",
+  "nativeTcp": {
+    "result": "CONNECTED_TLS",
+    "dnsAddressCounts": {
+      "ipv4": 2,
+      "ipv6": 2
+    },
+    "httpStatusLine": "HTTP/1.1 200 OK",
+    "elapsedSeconds": 0.117
+  },
+  "httpClient": {
+    "http": 200,
+    "bytes": 536
+  }
+}

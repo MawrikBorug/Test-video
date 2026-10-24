@@ -1,0 +1,25 @@
+{
+  "kind": "LOCAL_BUNDLED_STREMIO_CONTROL",
+  "at": "2026-10-24T17:38:19.973943+00:00",
+  "networkFact": "Published Vercel native TCP/TLS connected; no proxy and no managed policy file there",
+  "nodeBundled": {
+    "nodeVersion": "v24.19.0",
+    "nodeBytes": 125989464,
+    "stremioVersion": "4.20.17",
+    "stremioSha256": "567a397bb11b788571bf1750fd05dd78927f97bec0c9ddeaa6d9cc1eccee3922",
+    "stremioSource": "https://dl.strem.io/server/v4.20.17/desktop/server.js"
+  },
+  "ownedControl": {
+    "metadata": "BEP9 over loopback TCP; no WAN sources in control",
+    "playingFrames": 28,
+    "farSeek": 121.172221,
+    "ended": true,
+    "audioSwitch": true,
+    "qualitySwitch720to480": true,
+    "automaticFallback": true,
+    "browserErrors": []
+  },
+  "commercialPlaybackAccepted": false,
+  "deployedStremioPlayback": "NOT_RUN_YET",
+  "physicalIPhone": "NOT_RUN"
+}

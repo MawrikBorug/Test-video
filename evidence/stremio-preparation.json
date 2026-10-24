@@ -43,11 +43,11 @@
     "oneEarlierBrowserSuite": "initialization test started before the restarted backend was ready; failed, then passed after explicit readiness wait"
   },
   "codespaces": {
-    "state": "CONFIGURATION_PREPARED_NOT_CREATED",
+    "state": "REJECTED_OWNER_REPORTED_QUOTA_EXHAUSTED",
     "machineAndDefaultSettingsApi": 403,
     "reason": "Resource not accessible by integration",
     "externalTorrentPeers": "NOT_RUN",
-    "freeQuotaRemainingForAccount": "UNKNOWN",
+    "freeQuotaRemainingForAccount": "EXHAUSTED: owner report, not an API billing measurement",
     "privateStremioApiPorts": [
       11470,
       12470
