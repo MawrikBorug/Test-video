@@ -44,7 +44,7 @@ class Torrent:
                     with self._lock:
                         if a.error.value()==0:
                             self._cache[a.piece]=bytes(a.buffer)
-                            while len(self._cache)>48:self._cache.popitem(last=False)
+                            while len(self._cache)>1 and sum(map(len,self._cache.values()))>64*1024**2:self._cache.popitem(last=False)
                         e=self._events.get(a.piece)
                         if e:e.set()
                 elif isinstance(a,lt.torrent_error_alert):self.error='TORRENT_STORAGE_OR_IO_ERROR'
@@ -127,6 +127,7 @@ class Torrent:
                 'verifiedPieces':s.num_pieces,'metadataVerified':self.handle.has_metadata(),
                 'file':self.file,'metadataEvidence':getattr(self,'metadata_evidence',None),'dhtNodes':self.session.status().dht_nodes,'listenPortReady':self.session.listen_port()>0,
                 'alertCounts':self.alert_counts.copy(),'trackerErrors':self.tracker_errors[:],
+                'httpsDiscovery':getattr(self,'https_discovery',None),
                 'transport':'BitTorrent TCP/UDP → libtorrent → FFmpeg → HLS'}
 
     def close(self):

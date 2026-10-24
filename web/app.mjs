@@ -9,7 +9,8 @@ function log(code,details={}){state.log.push({at:new Date().toISOString(),code,m
 function status(text){$('status').textContent=text;}
 const safeError=e=>String(e.message||e).replace(/https?:\/\/\S+/g,'[URL]').replace(/[A-Za-z0-9_\-]{64,}/g,'[скрыто]').slice(0,220);
 function step(id,value){$('step-'+id).className=value;}
-function api(path){return path;}
+let executorBase='';try{executorBase=localStorage.getItem('test-video.executor.v1')||''}catch{}
+function api(path){return executorBase?executorBase+path:path;}
 async function request(path,options={}){return jsonRequest(api(path),options);}
 function selection(){return {work:state.work.key,season:state.season,episode:state.episode};}
 function option(value,label){const el=document.createElement('option');el.value=value;el.textContent=label;return el;}
@@ -53,7 +54,7 @@ async function search(){
  await stop();const generation=state.generation;const controller=new AbortController();state.controller=controller;state.candidates=[];state.limit=20;state.queue=[];$('auto').disabled=true;renderCandidates();step('search','busy');status('Запрашиваем Comet и TorrentsDB…');
  for(const p of providers){
   try{
-   const url=state.ready?`/api/search/${p.id}/${state.work.key}?season=${state.season}&episode=${state.episode}`:`${p.base}/stream/${state.work.type}/${videoId(state.work,state.season,state.episode)}.json`;
+   const url=state.ready?api(`/api/search/${p.id}/${state.work.key}?season=${state.season}&episode=${state.episode}`):`${p.base}/stream/${state.work.type}/${videoId(state.work,state.season,state.episode)}.json`;
    const j=await jsonRequest(url,{signal:controller.signal});if(generation!==state.generation)return;
    if(!Array.isArray(j.streams))throw new Error('STREAMS_INVALID');
    const normalized=j.streams.map(s=>normalize(s,state.work,p)).filter(Boolean);
@@ -122,6 +123,8 @@ for(const name of ['playing','pause','seeking','seeked','ended','error','waiting
 });
 video.addEventListener('timeupdate',()=>{if(!state.running||!state.ticket)return;state.lastProgress=performance.now();clearTimeout(state.stallTimer);const k=`test-video.position.${state.work.key}.${state.season}.${state.episode}`;try{localStorage.setItem(k,JSON.stringify({time:video.currentTime,duration:video.duration,hash:state.active.hash,at:new Date().toISOString()}))}catch{}});
 $('export').onclick=()=>{const report={schemaVersion:1,build:__BUILD_SHA__,exportedAt:new Date().toISOString(),platform:{userAgent:navigator.userAgent,standalone:matchMedia('(display-mode: standalone)').matches},selection:selection(),checks:{physicalIPhone:'NOT_RUN_BY_DEVELOPER',pwa:'NOT_RUN_BY_DEVELOPER'},events:state.log};const url=URL.createObjectURL(new Blob([JSON.stringify(report,null,2)],{type:'application/json'}));const a=document.createElement('a');a.href=url;a.download='test-video-'+new Date().toISOString().replaceAll(':','-')+'.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000)};
+$('executor-url').value=executorBase;
+$('executor-save').onclick=async()=>{const value=$('executor-url').value.trim().replace(/\/$/,'');try{if(value){const u=new URL(value);if(u.protocol!=='https:'||u.username||u.password||u.search||u.hash||u.pathname!=='/')throw new Error('Нужен HTTPS-адрес корня сервера без пароля и параметров.')}await stop();executorBase=value;localStorage.setItem('test-video.executor.v1',value);$('health').replaceChildren();await init();}catch(e){status(safeError(e))}};
 async function init(){
  $('build').textContent=__BUILD_SHA__.slice(0,8);try{state.log=JSON.parse(localStorage.getItem('test-video.log.v1')||'[]').slice(-200)}catch{}
  try{const h=await request('/api/health',{timeout:12000});state.dataMode=h.control?'CONTROL_SYNTHETIC_SEARCH_REAL_TCP_MEDIA':'live';state.ready=!!h.ffmpeg&&!!h.ffprobe;$('connection').textContent=state.ready?'Исполнитель доступен':'FFmpeg недоступен';$('connection').className='badge '+(state.ready?'ok':'warn');$('overall').textContent=state.ready?'Торрент-исполнитель запущен':'Исполнитель не готов';$('environment').textContent=state.ready?'Библиотеки готовы. Получение байтов и просмотр проверяются отдельно для каждой раздачи.':'Нужна работающая серверная среда с libtorrent и FFmpeg.';for(const text of [h.transport,h.transcoder,'Кэш: '+(h.cacheBytes/1048576).toFixed(0)+' МиБ',h.serverless?'Vercel Function · cold start возможен':'Серверный процесс']){const span=document.createElement('span');span.textContent=text;$('health').append(span)}log('EXECUTOR_RUNTIME',h);}

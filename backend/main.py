@@ -3,12 +3,14 @@ from contextlib import asynccontextmanager
 import httpx
 from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse, Response, FileResponse
+from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
 from .engine import Torrent, known_metadata
 from .selection import Refusal
 from .raw import start_raw
 from .media import inspect, manifest, segment
 from .metadata import resolve as resolve_metadata
+from .discovery import discover
 
 ROOT=pathlib.Path(__file__).resolve().parents[1]
 CATALOG=json.loads((ROOT/'web/catalog.json').read_text())
@@ -35,7 +37,7 @@ async def lifespan(app):
         t.close()
 
 app=FastAPI(lifespan=lifespan)
-app.add_middleware(CORSMiddleware,allow_origins=['https://mawrikborug.github.io','http://localhost:5173','http://127.0.0.1:5173'],allow_methods=['GET','POST','DELETE'],allow_headers=['Content-Type'],expose_headers=['Content-Length'])
+app.add_middleware(CORSMiddleware,allow_origins=['https://mawrikborug.github.io','https://test-video-taupe.vercel.app','http://localhost:5173','http://127.0.0.1:5173'],allow_methods=['GET','POST','DELETE'],allow_headers=['Content-Type'],expose_headers=['Content-Length'])
 
 @app.exception_handler(Refusal)
 async def refused(request,error):
@@ -106,7 +108,7 @@ async def load(data,probe=True):
     key=engine_key(data)
     async with lock:
         t=engines.get(key)
-        if t and (t.closed or t.handle.status().total_payload_download>MAX_BYTES):
+        if t and (t.closed or (not t.tasks and t.handle.status().total_payload_download>MAX_BYTES)):
             if getattr(t,'raw_server',None):t.raw_server.shutdown()
             t.close();engines.pop(key,None);t=None
         if not t:
@@ -126,6 +128,9 @@ async def load(data,probe=True):
             engines[key]=t
     try:
         if not t.file:
+            if not getattr(t,'https_discovery',None):
+                reports=await discover(t)
+                event('HTTPS_TRACKER_DISCOVERY',infoHash=t.hash,reports=reports)
             f=await t.select(data.get('season'),data.get('episode'),data.get('fileIdx'))
             if data.get('verifiedFile') is not None and f['index']!=data['verifiedFile']:raise Refusal('REHYDRATED_FILE_CHANGED')
             start_raw(t)
@@ -198,5 +203,4 @@ async def close_source(request:Request):
         t.close()
     return {'closed':True}
 
-@app.get('/')
-async def index():return FileResponse(ROOT/'dist/index.html')
+app.mount('/',StaticFiles(directory=ROOT/'dist',html=True,check_dir=False),name='web')
