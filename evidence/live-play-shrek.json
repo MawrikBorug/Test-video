@@ -40,5 +40,113 @@
     "segments": [],
     "playbackInBrowser": "NOT_RUN",
     "physicalIPhone": "NOT_RUN"
+  },
+  {
+    "base": "https://test-video-taupe.vercel.app",
+    "sourceBuild": {
+      "version": "torrent-1",
+      "sha": "c5ca452045228ff0d547283e32edca3011a04084",
+      "builtAt": "2026-10-24T11:59:01.492Z",
+      "transport": "torrent-only",
+      "iframe": false
+    },
+    "kind": "LIVE_DEPLOYED_TORRENT",
+    "at": "2026-10-24T12:01:30Z",
+    "request": {
+      "work": "shrek",
+      "season": 1,
+      "episode": 1,
+      "hash": "d41689639e37cb6604229e1e825cb24060f5ed18",
+      "provider": "comet",
+      "fileIdx": null
+    },
+    "http": 422,
+    "elapsedSeconds": 49.68,
+    "result": {
+      "error": "METADATA_TIMEOUT",
+      "diagnostics": {
+        "infoHash": "d41689639e37cb6604229e1e825cb24060f5ed18",
+        "peers": 0,
+        "seeds": 0,
+        "receivedBytes": 0,
+        "downloadBytesPerSecond": 0,
+        "verifiedPieces": 0,
+        "metadataVerified": false,
+        "file": null,
+        "metadataEvidence": {
+          "source": "BEP9-required",
+          "httpsAttempts": [
+            {
+              "host": "itorrents",
+              "http": 301
+            },
+            {
+              "host": "torrage",
+              "http": 403
+            },
+            {
+              "host": "btcache",
+              "error": "INVALID_OR_WRONG_HASH_TORRENT"
+            }
+          ]
+        },
+        "dhtNodes": 0,
+        "listenPortReady": true,
+        "alertCounts": {
+          "log_alert": 20,
+          "listen_succeeded_alert": 4,
+          "torrent_added_alert": 1,
+          "torrent_log_alert": 256,
+          "state_changed_alert": 1,
+          "tracker_announce_alert": 12,
+          "add_torrent_alert": 1,
+          "stats_alert": 45,
+          "dht_log_alert": 1,
+          "tracker_error_alert": 12
+        },
+        "trackerErrors": [
+          {
+            "code": 180,
+            "message": "skipping tracker announce (unreachable)"
+          },
+          {
+            "code": 180,
+            "message": "skipping tracker announce (unreachable)"
+          },
+          {
+            "code": 180,
+            "message": "skipping tracker announce (unreachable)"
+          },
+          {
+            "code": 180,
+            "message": "skipping tracker announce (unreachable)"
+          },
+          {
+            "code": 16,
+            "message": "Device or resource busy"
+          },
+          {
+            "code": 16,
+            "message": "Device or resource busy"
+          }
+        ],
+        "httpsDiscovery": [
+          {
+            "host": "tracker.tamersunion.org",
+            "error": "HTTP_NETWORK_OR_TIMEOUT",
+            "peersReported": null
+          },
+          {
+            "host": "tracker.gbitt.info",
+            "error": "HTTP_NETWORK_OR_TIMEOUT",
+            "peersReported": null
+          }
+        ],
+        "transport": "BitTorrent TCP/UDP → libtorrent → FFmpeg → HLS"
+      }
+    },
+    "segments": [],
+    "playbackInBrowser": "NOT_RUN",
+    "physicalIPhone": "NOT_RUN"
   }
 ]

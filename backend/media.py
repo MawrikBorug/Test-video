@@ -15,8 +15,12 @@ async def command(args, timeout=100):
     return out
 
 async def inspect(torrent):
-    raw=await command([FFPROBE,'-v','error','-rw_timeout','65000000','-probesize','4000000',
-        '-analyzeduration','5000000','-show_streams','-show_format','-of','json',torrent.raw_url],100)
+    try:
+        raw=await command([FFPROBE,'-v','error','-rw_timeout','65000000','-probesize','4000000',
+            '-analyzeduration','5000000','-show_streams','-show_format','-of','json',torrent.raw_url],100)
+    except Refusal:
+        if getattr(torrent,'last_read_error',None):raise Refusal(torrent.last_read_error)
+        raise
     try:j=json.loads(raw)
     except:raise Refusal('PROBE_INVALID_JSON')
     videos=[s for s in j.get('streams',[]) if s.get('codec_type')=='video' and not s.get('disposition',{}).get('attached_pic')]

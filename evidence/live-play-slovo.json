@@ -188,5 +188,110 @@
     "segments": [],
     "playbackInBrowser": "NOT_RUN",
     "physicalIPhone": "NOT_RUN"
+  },
+  {
+    "base": "https://test-video-taupe.vercel.app",
+    "sourceBuild": {
+      "version": "torrent-1",
+      "sha": "c5ca452045228ff0d547283e32edca3011a04084",
+      "builtAt": "2026-10-24T11:59:01.492Z",
+      "transport": "torrent-only",
+      "iframe": false
+    },
+    "kind": "LIVE_DEPLOYED_TORRENT",
+    "at": "2026-10-24T12:00:47Z",
+    "request": {
+      "work": "slovo",
+      "season": 1,
+      "episode": 1,
+      "hash": "233587375c21491552e04c10a3fd3b6fa05a47af",
+      "provider": "torrentsdb",
+      "fileIdx": 0
+    },
+    "http": 422,
+    "elapsedSeconds": 56.65,
+    "result": {
+      "error": "MEDIA_PROCESS_FAILED",
+      "diagnostics": {
+        "infoHash": "233587375c21491552e04c10a3fd3b6fa05a47af",
+        "peers": 0,
+        "seeds": 0,
+        "receivedBytes": 0,
+        "downloadBytesPerSecond": 0,
+        "verifiedPieces": 0,
+        "metadataVerified": true,
+        "file": {
+          "index": 0,
+          "path": "Slovo.Pacana.Krov'.Na.Asfal'te.S01.2023.WEB-DLRip-AVC.KPK.GF/Slovo.Pacana.Krov'.Na.Asfal'te.s01e01.2023.WEB-DLRip-AVC.KPK.GF.mp4",
+          "size": 242466331
+        },
+        "metadataEvidence": {
+          "source": "developer-metadata-snapshot",
+          "snapshotDate": "2026-10-23/24",
+          "hashChecked": true,
+          "freshNetworkResponse": false
+        },
+        "dhtNodes": 0,
+        "listenPortReady": true,
+        "alertCounts": {
+          "log_alert": 20,
+          "listen_succeeded_alert": 4,
+          "torrent_added_alert": 1,
+          "torrent_log_alert": 263,
+          "add_torrent_alert": 1,
+          "state_changed_alert": 2,
+          "torrent_finished_alert": 1,
+          "torrent_checked_alert": 1,
+          "tracker_announce_alert": 12,
+          "cache_flushed_alert": 1,
+          "file_prio_alert": 2,
+          "stats_alert": 55,
+          "dht_log_alert": 1,
+          "tracker_error_alert": 12
+        },
+        "trackerErrors": [
+          {
+            "code": 180,
+            "message": "skipping tracker announce (unreachable)"
+          },
+          {
+            "code": 180,
+            "message": "skipping tracker announce (unreachable)"
+          },
+          {
+            "code": 180,
+            "message": "skipping tracker announce (unreachable)"
+          },
+          {
+            "code": 180,
+            "message": "skipping tracker announce (unreachable)"
+          },
+          {
+            "code": 16,
+            "message": "Device or resource busy"
+          },
+          {
+            "code": 16,
+            "message": "Device or resource busy"
+          }
+        ],
+        "httpsDiscovery": [
+          {
+            "host": "tracker.tamersunion.org",
+            "error": "HTTP_NETWORK_OR_TIMEOUT",
+            "peersReported": null
+          },
+          {
+            "host": "tracker.gbitt.info",
+            "error": "HTTP_NETWORK_OR_TIMEOUT",
+            "peersReported": null
+          }
+        ],
+        "transport": "BitTorrent TCP/UDP → libtorrent → FFmpeg → HLS"
+      }
+    },
+    "segments": [],
+    "playbackInBrowser": "NOT_RUN",
+    "physicalIPhone": "NOT_RUN"
   }
 ]

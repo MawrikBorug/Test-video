@@ -1,0 +1,112 @@
+{
+  "at": "2026-10-24T12:05:17.144098+00:00",
+  "kind": "VERIFICATION_SUMMARY",
+  "selectionPlaybackAccepted": false,
+  "commercialTitlesWithVerifiedPlayback": 0,
+  "requiredTitles": 10,
+  "liveSearchRequests": 48,
+  "liveSearchResponsesWithCandidates": 48,
+  "ownedTcpControl": {
+    "metadata": "SYNTHETIC_SEARCH / real owned torrent",
+    "beforeFullDownload": true,
+    "farSeek120": true,
+    "audioSwitch": true,
+    "quality720to480": true,
+    "automaticFallback": true,
+    "endedEvent": true
+  },
+  "iPhoneSafari": "NOT_RUN",
+  "installedPWA": "NOT_RUN",
+  "titles": [
+    {
+      "work": "breakingbad",
+      "attempts": 3,
+      "latestError": "METADATA_TIMEOUT",
+      "metadataVerified": false,
+      "peers": 0,
+      "receivedBytes": 0,
+      "played": false
+    },
+    {
+      "work": "dandadan",
+      "attempts": 2,
+      "latestError": "METADATA_TIMEOUT",
+      "metadataVerified": null,
+      "peers": null,
+      "receivedBytes": null,
+      "played": false
+    },
+    {
+      "work": "deathnote",
+      "attempts": 2,
+      "latestError": "METADATA_TIMEOUT",
+      "metadataVerified": null,
+      "peers": null,
+      "receivedBytes": null,
+      "played": false
+    },
+    {
+      "work": "fallout",
+      "attempts": 4,
+      "latestError": "METADATA_TIMEOUT",
+      "metadataVerified": false,
+      "peers": 0,
+      "receivedBytes": 0,
+      "played": false
+    },
+    {
+      "work": "frieren",
+      "attempts": 2,
+      "latestError": "METADATA_TIMEOUT",
+      "metadataVerified": false,
+      "peers": 0,
+      "receivedBytes": 0,
+      "played": false
+    },
+    {
+      "work": "hailmary",
+      "attempts": 3,
+      "latestError": "METADATA_TIMEOUT",
+      "metadataVerified": false,
+      "peers": 0,
+      "receivedBytes": 0,
+      "played": false
+    },
+    {
+      "work": "interstellar",
+      "attempts": 2,
+      "latestError": "METADATA_TIMEOUT",
+      "metadataVerified": false,
+      "peers": 0,
+      "receivedBytes": 0,
+      "played": false
+    },
+    {
+      "work": "shrek",
+      "attempts": 3,
+      "latestError": "METADATA_TIMEOUT",
+      "metadataVerified": false,
+      "peers": 0,
+      "receivedBytes": 0,
+      "played": false
+    },
+    {
+      "work": "slovo",
+      "attempts": 5,
+      "latestError": "MEDIA_PROCESS_FAILED",
+      "metadataVerified": true,
+      "peers": 0,
+      "receivedBytes": 0,
+      "played": false
+    },
+    {
+      "work": "spiderman",
+      "attempts": 3,
+      "latestError": "METADATA_TIMEOUT",
+      "metadataVerified": false,
+      "peers": 0,
+      "receivedBytes": 0,
+      "played": false
+    }
+  ]
+}

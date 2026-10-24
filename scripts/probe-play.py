@@ -1,7 +1,7 @@
 """Live commercial torrent probes: metadata -> bytes -> decoded HLS segments.
 No source URL/ticket/media files enter evidence or Git.
 """
-import json,pathlib,re,subprocess,sys,time,math,tempfile
+import json,pathlib,re,subprocess,sys,time,math,tempfile,os
 from scripts.probe_live import request
 
 ROOT=pathlib.Path(__file__).resolve().parents[1]
@@ -16,11 +16,11 @@ for key in keys:
  cs.sort(key=rank,reverse=True)
  report_file=ROOT/'evidence'/('live-play-'+key+'.json')
  reports=json.loads(report_file.read_text()) if report_file.exists() else []
- for candidate in cs[:2]:
+ for candidate in cs[:int(os.environ.get('PROBE_LIMIT','2'))]:
   body={'work':key,'season':row['season'] or 1,'episode':row['episode'] or 1,**{k:candidate[k] for k in ['hash','provider','fileIdx']}}
   print('OPEN',key,candidate['hash'],candidate['title'][:150].replace('\n',' / '),flush=True)
   started=time.time();status,j=request('/api/open',body,timeout=170);ticket=j.pop('ticket',None)
-  report={'kind':'LIVE_DEPLOYED_TORRENT','at':time.strftime('%Y-%m-%dT%H:%M:%SZ',time.gmtime()),'request':body,'http':status,'elapsedSeconds':round(time.time()-started,2),'result':j,'segments':[],'playbackInBrowser':'NOT_RUN','physicalIPhone':'NOT_RUN'}
+  report={'base':'https://test-video-taupe.vercel.app','sourceBuild':request('/build-info.json')[1],'kind':'LIVE_DEPLOYED_TORRENT','at':time.strftime('%Y-%m-%dT%H:%M:%SZ',time.gmtime()),'request':body,'http':status,'elapsedSeconds':round(time.time()-started,2),'result':j,'segments':[],'playbackInBrowser':'NOT_RUN','physicalIPhone':'NOT_RUN'}
   if ticket:
    try:
     m=j['media'];audio=next((a['index'] for a in m['audio'] if a['russian']),None)

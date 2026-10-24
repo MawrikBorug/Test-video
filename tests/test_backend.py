@@ -62,6 +62,11 @@ class TorrentPipeline(unittest.IsolatedAsyncioTestCase):
             self.assertLess(received_at_start,video.stat().st_size)
             far=await segment(t,20,media['audio'][1]['index'],180,media['duration'])
             self.assertNotEqual(first,far)
+            # A backward seek after cache eviction must await a fresh read_piece
+            # alert rather than reuse an already-set Event from the first read.
+            with t._lock:t._cache.clear()
+            again=await asyncio.to_thread(lambda:b''.join(t.read(0,1023)))
+            self.assertEqual(again,video.read_bytes()[:1024])
             for name,body in [('first',first),('seek120',far)]:
                 p=root/(name+'.ts');p.write_bytes(body)
                 probe=json.loads(subprocess.check_output(['ffprobe','-v','error','-show_streams','-of','json',str(p)]))

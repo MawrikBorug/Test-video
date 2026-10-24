@@ -4,29 +4,31 @@
   "search": "SYNTHETIC",
   "media": "OWNED_GENERATED_150S",
   "initial": {
-    "time": 1.460174,
+    "time": 1.526044,
     "duration": 150.023,
-    "width": 640,
-    "height": 360,
-    "frames": 38,
+    "width": 960,
+    "height": 720,
+    "frames": 39,
     "buffered": [
       [
         0.041888,
-        24.111566
+        12.037188
       ]
     ]
   },
   "far": {
-    "time": 121.177384,
+    "time": 121.806008,
     "ready": 4,
-    "frames": 112
+    "frames": 130
   },
   "ended": true,
+  "qualitySwitchTo480": true,
+  "automaticFallbackVerified": true,
   "commercialTitlesVerified": false,
   "errors": [],
   "events": [
     {
-      "at": "2026-10-24T11:42:57.480Z",
+      "at": "2026-10-24T11:58:26.597Z",
       "code": "EXECUTOR_RUNTIME",
       "mode": "CONTROL_SYNTHETIC_SEARCH_REAL_TCP_MEDIA",
       "details": {
@@ -43,7 +45,16 @@
       }
     },
     {
-      "at": "2026-10-24T11:42:58.541Z",
+      "at": "2026-10-24T11:58:27.158Z",
+      "code": "EPISODE_CATALOG",
+      "mode": "CONTROL_SYNTHETIC_SEARCH_REAL_TCP_MEDIA",
+      "details": {
+        "work": "dandadan",
+        "episodes": 25
+      }
+    },
+    {
+      "at": "2026-10-24T11:58:27.690Z",
       "code": "LIVE_SEARCH",
       "mode": "CONTROL_SYNTHETIC_SEARCH_REAL_TCP_MEDIA",
       "details": {
@@ -51,13 +62,13 @@
         "work": "dandadan",
         "season": 1,
         "episode": 2,
-        "reported": 1,
-        "torrentCandidates": 1,
-        "unique": 1
+        "reported": 2,
+        "torrentCandidates": 2,
+        "unique": 2
       }
     },
     {
-      "at": "2026-10-24T11:42:58.548Z",
+      "at": "2026-10-24T11:58:27.699Z",
       "code": "LIVE_SEARCH",
       "mode": "CONTROL_SYNTHETIC_SEARCH_REAL_TCP_MEDIA",
       "details": {
@@ -65,41 +76,63 @@
         "work": "dandadan",
         "season": 1,
         "episode": 2,
-        "reported": 1,
-        "torrentCandidates": 1,
-        "unique": 1
+        "reported": 2,
+        "torrentCandidates": 2,
+        "unique": 2
       }
     },
     {
-      "at": "2026-10-24T11:42:58.579Z",
+      "at": "2026-10-24T11:58:27.742Z",
       "code": "TORRENT_OPEN",
       "mode": "CONTROL_SYNTHETIC_SEARCH_REAL_TCP_MEDIA",
       "details": {
         "work": "dandadan",
         "season": 1,
         "episode": 2,
-        "hash": "f339ada8db59363361b51637a31af0b449a51d31",
+        "hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
         "fileIdxClaimed": 0,
         "provider": "comet"
       }
     },
     {
-      "at": "2026-10-24T11:42:59.161Z",
+      "at": "2026-10-24T11:58:27.778Z",
+      "code": "SOURCE_FAILED",
+      "mode": "CONTROL_SYNTHETIC_SEARCH_REAL_TCP_MEDIA",
+      "details": {
+        "hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "error": "TORRENT_HASH_MISMATCH"
+      }
+    },
+    {
+      "at": "2026-10-24T11:58:27.779Z",
+      "code": "TORRENT_OPEN",
+      "mode": "CONTROL_SYNTHETIC_SEARCH_REAL_TCP_MEDIA",
+      "details": {
+        "work": "dandadan",
+        "season": 1,
+        "episode": 2,
+        "hash": "3b48519eabb978c8b166640d999e51c635a3a7ee",
+        "fileIdxClaimed": 0,
+        "provider": "comet"
+      }
+    },
+    {
+      "at": "2026-10-24T11:58:29.888Z",
       "code": "FILE_AND_TRACKS_VERIFIED",
       "mode": "CONTROL_SYNTHETIC_SEARCH_REAL_TCP_MEDIA",
       "details": {
         "file": {
           "index": 0,
           "path": "CONTROL/CONTROL.S01E02.mkv",
-          "size": 21818923
+          "size": 56825929
         },
         "media": {
           "duration": 150.023,
           "video": {
             "index": 0,
             "codec": "h264",
-            "width": 640,
-            "height": 360
+            "width": 960,
+            "height": 720
           },
           "audio": [
             {
@@ -120,39 +153,68 @@
             }
           ],
           "qualities": [
-            360
+            480,
+            720
           ],
           "tracksInspected": true
         },
         "torrent": {
-          "infoHash": "f339ada8db59363361b51637a31af0b449a51d31",
+          "infoHash": "3b48519eabb978c8b166640d999e51c635a3a7ee",
           "peers": 1,
           "seeds": 1,
-          "receivedBytes": 7257253,
-          "downloadBytesPerSecond": 0,
-          "verifiedPieces": 13,
+          "receivedBytes": 1017796,
+          "downloadBytesPerSecond": 60,
+          "verifiedPieces": 1,
           "metadataVerified": true,
           "file": {
             "index": 0,
             "path": "CONTROL/CONTROL.S01E02.mkv",
-            "size": 21818923
+            "size": 56825929
           },
+          "metadataEvidence": {
+            "source": "CONTROL_OWNED_SYNTHETIC_METADATA"
+          },
+          "dhtNodes": 0,
+          "listenPortReady": true,
+          "alertCounts": {
+            "log_alert": 25,
+            "listen_succeeded_alert": 6,
+            "torrent_added_alert": 1,
+            "torrent_log_alert": 51,
+            "add_torrent_alert": 1,
+            "state_changed_alert": 2,
+            "torrent_finished_alert": 1,
+            "torrent_checked_alert": 1,
+            "tracker_announce_alert": 6,
+            "cache_flushed_alert": 1,
+            "file_prio_alert": 2,
+            "stats_alert": 2,
+            "peer_log_alert": 1240,
+            "peer_connect_alert": 1,
+            "picker_log_alert": 63,
+            "block_downloading_alert": 128,
+            "block_finished_alert": 62,
+            "piece_finished_alert": 1,
+            "read_piece_alert": 1
+          },
+          "trackerErrors": [],
+          "httpsDiscovery": null,
           "transport": "BitTorrent TCP/UDP → libtorrent → FFmpeg → HLS"
         }
       }
     },
     {
-      "at": "2026-10-24T11:42:59.171Z",
+      "at": "2026-10-24T11:58:29.899Z",
       "code": "VIDEO_LOAD",
       "mode": "CONTROL_SYNTHETIC_SEARCH_REAL_TCP_MEDIA",
       "details": {
         "audio": 2,
-        "height": 360,
+        "height": 720,
         "position": 0
       }
     },
     {
-      "at": "2026-10-24T11:42:59.213Z",
+      "at": "2026-10-24T11:58:29.938Z",
       "code": "VIDEO_WAITING",
       "mode": "CONTROL_SYNTHETIC_SEARCH_REAL_TCP_MEDIA",
       "details": {
@@ -164,182 +226,137 @@
       }
     },
     {
-      "at": "2026-10-24T11:42:59.953Z",
+      "at": "2026-10-24T11:58:32.046Z",
       "code": "VIDEO_SEGMENT_BYTES",
       "mode": "CONTROL_SYNTHETIC_SEARCH_REAL_TCP_MEDIA",
       "details": {
-        "bytes": 1231588,
+        "bytes": 3230404,
         "segment": 0
       }
     },
     {
-      "at": "2026-10-24T11:42:59.964Z",
+      "at": "2026-10-24T11:58:32.059Z",
       "code": "VIDEO_LOADEDMETADATA",
       "mode": "CONTROL_SYNTHETIC_SEARCH_REAL_TCP_MEDIA",
       "details": {
         "time": 0,
         "duration": 150.023,
-        "width": 640,
-        "height": 360,
+        "width": 960,
+        "height": 720,
         "trusted": true
       }
     },
     {
-      "at": "2026-10-24T11:43:00.022Z",
+      "at": "2026-10-24T11:58:32.131Z",
       "code": "VIDEO_PLAYING",
       "mode": "CONTROL_SYNTHETIC_SEARCH_REAL_TCP_MEDIA",
       "details": {
         "time": 0,
         "duration": 150.023,
-        "width": 640,
-        "height": 360,
+        "width": 960,
+        "height": 720,
         "trusted": true
       }
     },
     {
-      "at": "2026-10-24T11:43:00.318Z",
+      "at": "2026-10-24T11:58:32.660Z",
       "code": "VIDEO_SEGMENT_BYTES",
       "mode": "CONTROL_SYNTHETIC_SEARCH_REAL_TCP_MEDIA",
       "details": {
-        "bytes": 1298892,
+        "bytes": 3275524,
         "segment": 1
       }
     },
     {
-      "at": "2026-10-24T11:43:00.656Z",
-      "code": "VIDEO_SEGMENT_BYTES",
-      "mode": "CONTROL_SYNTHETIC_SEARCH_REAL_TCP_MEDIA",
-      "details": {
-        "bytes": 1298516,
-        "segment": 2
-      }
-    },
-    {
-      "at": "2026-10-24T11:43:01.005Z",
-      "code": "VIDEO_SEGMENT_BYTES",
-      "mode": "CONTROL_SYNTHETIC_SEARCH_REAL_TCP_MEDIA",
-      "details": {
-        "bytes": 1297764,
-        "segment": 3
-      }
-    },
-    {
-      "at": "2026-10-24T11:43:01.548Z",
+      "at": "2026-10-24T11:58:33.746Z",
       "code": "VIDEO_SEEKING",
       "mode": "CONTROL_SYNTHETIC_SEARCH_REAL_TCP_MEDIA",
       "details": {
         "time": 120,
         "duration": 150.023,
-        "width": 640,
-        "height": 360,
+        "width": 960,
+        "height": 720,
         "trusted": true
       }
     },
     {
-      "at": "2026-10-24T11:43:01.549Z",
+      "at": "2026-10-24T11:58:33.753Z",
       "code": "VIDEO_WAITING",
       "mode": "CONTROL_SYNTHETIC_SEARCH_REAL_TCP_MEDIA",
       "details": {
         "time": 120,
         "duration": 150.023,
-        "width": 640,
-        "height": 360,
+        "width": 960,
+        "height": 720,
         "trusted": true
       }
     },
     {
-      "at": "2026-10-24T11:43:01.898Z",
+      "at": "2026-10-24T11:58:52.457Z",
       "code": "VIDEO_SEGMENT_BYTES",
       "mode": "CONTROL_SYNTHETIC_SEARCH_REAL_TCP_MEDIA",
       "details": {
-        "bytes": 1301712,
+        "bytes": 3277404,
         "segment": 19
       }
     },
     {
-      "at": "2026-10-24T11:43:02.240Z",
+      "at": "2026-10-24T11:58:52.995Z",
       "code": "VIDEO_SEGMENT_BYTES",
       "mode": "CONTROL_SYNTHETIC_SEARCH_REAL_TCP_MEDIA",
       "details": {
-        "bytes": 1303968,
+        "bytes": 3279848,
         "segment": 20
       }
     },
     {
-      "at": "2026-10-24T11:43:02.247Z",
+      "at": "2026-10-24T11:58:53.020Z",
       "code": "VIDEO_SEEKED",
-      "mode": "CONTROL_SYNTHETIC_SEARCH_REAL_TCP_MEDIA",
-      "details": {
-        "time": 120.001,
-        "duration": 150.023,
-        "width": 640,
-        "height": 360,
-        "trusted": true
-      }
-    },
-    {
-      "at": "2026-10-24T11:43:02.248Z",
-      "code": "VIDEO_PLAYING",
       "mode": "CONTROL_SYNTHETIC_SEARCH_REAL_TCP_MEDIA",
       "details": {
         "time": 120.002,
         "duration": 150.023,
-        "width": 640,
-        "height": 360,
+        "width": 960,
+        "height": 720,
         "trusted": true
       }
     },
     {
-      "at": "2026-10-24T11:43:02.550Z",
-      "code": "VIDEO_SEGMENT_BYTES",
+      "at": "2026-10-24T11:58:53.022Z",
+      "code": "VIDEO_PLAYING",
       "mode": "CONTROL_SYNTHETIC_SEARCH_REAL_TCP_MEDIA",
       "details": {
-        "bytes": 1288928,
-        "segment": 21
+        "time": 120.003,
+        "duration": 150.023,
+        "width": 960,
+        "height": 720,
+        "trusted": true
       }
     },
     {
-      "at": "2026-10-24T11:43:02.913Z",
-      "code": "VIDEO_SEGMENT_BYTES",
-      "mode": "CONTROL_SYNTHETIC_SEARCH_REAL_TCP_MEDIA",
-      "details": {
-        "bytes": 1298140,
-        "segment": 22
-      }
-    },
-    {
-      "at": "2026-10-24T11:43:03.232Z",
-      "code": "VIDEO_SEGMENT_BYTES",
-      "mode": "CONTROL_SYNTHETIC_SEARCH_REAL_TCP_MEDIA",
-      "details": {
-        "bytes": 1300396,
-        "segment": 23
-      }
-    },
-    {
-      "at": "2026-10-24T11:43:03.469Z",
+      "at": "2026-10-24T11:58:54.872Z",
       "code": "USER_TRACK_OR_QUALITY",
       "mode": "CONTROL_SYNTHETIC_SEARCH_REAL_TCP_MEDIA",
       "details": {
-        "position": 121.182535
+        "position": 121.813643
       }
     },
     {
-      "at": "2026-10-24T11:43:03.488Z",
+      "at": "2026-10-24T11:58:54.884Z",
       "code": "VIDEO_LOAD",
       "mode": "CONTROL_SYNTHETIC_SEARCH_REAL_TCP_MEDIA",
       "details": {
         "audio": 1,
-        "height": 360,
-        "position": 121.182535
+        "height": 720,
+        "position": 121.813643
       }
     },
     {
-      "at": "2026-10-24T11:43:03.503Z",
+      "at": "2026-10-24T11:58:54.896Z",
       "code": "VIDEO_WAITING",
       "mode": "CONTROL_SYNTHETIC_SEARCH_REAL_TCP_MEDIA",
       "details": {
-        "time": 121.183,
+        "time": 121.814,
         "duration": null,
         "width": 0,
         "height": 0,
@@ -347,148 +364,235 @@
       }
     },
     {
-      "at": "2026-10-24T11:43:03.929Z",
+      "at": "2026-10-24T11:58:55.598Z",
       "code": "VIDEO_SEGMENT_BYTES",
       "mode": "CONTROL_SYNTHETIC_SEARCH_REAL_TCP_MEDIA",
       "details": {
-        "bytes": 1303780,
+        "bytes": 3280976,
         "segment": 20
       }
     },
     {
-      "at": "2026-10-24T11:43:03.937Z",
+      "at": "2026-10-24T11:58:55.618Z",
       "code": "VIDEO_LOADEDMETADATA",
       "mode": "CONTROL_SYNTHETIC_SEARCH_REAL_TCP_MEDIA",
       "details": {
-        "time": 121.183,
+        "time": 121.814,
         "duration": 150.023,
-        "width": 640,
-        "height": 360,
+        "width": 960,
+        "height": 720,
         "trusted": true
       }
     },
     {
-      "at": "2026-10-24T11:43:03.937Z",
+      "at": "2026-10-24T11:58:55.618Z",
       "code": "VIDEO_SEEKING",
       "mode": "CONTROL_SYNTHETIC_SEARCH_REAL_TCP_MEDIA",
       "details": {
-        "time": 121.183,
+        "time": 121.814,
         "duration": 150.023,
-        "width": 640,
-        "height": 360,
+        "width": 960,
+        "height": 720,
         "trusted": true
       }
     },
     {
-      "at": "2026-10-24T11:43:03.948Z",
+      "at": "2026-10-24T11:58:55.661Z",
       "code": "VIDEO_SEEKED",
       "mode": "CONTROL_SYNTHETIC_SEARCH_REAL_TCP_MEDIA",
       "details": {
-        "time": 121.183,
+        "time": 121.817,
         "duration": 150.023,
-        "width": 640,
-        "height": 360,
+        "width": 960,
+        "height": 720,
         "trusted": true
       }
     },
     {
-      "at": "2026-10-24T11:43:03.948Z",
+      "at": "2026-10-24T11:58:55.661Z",
       "code": "VIDEO_PLAYING",
       "mode": "CONTROL_SYNTHETIC_SEARCH_REAL_TCP_MEDIA",
       "details": {
-        "time": 121.184,
+        "time": 121.818,
         "duration": 150.023,
-        "width": 640,
-        "height": 360,
+        "width": 960,
+        "height": 720,
         "trusted": true
       }
     },
     {
-      "at": "2026-10-24T11:43:04.254Z",
+      "at": "2026-10-24T11:58:56.163Z",
       "code": "VIDEO_SEGMENT_BYTES",
       "mode": "CONTROL_SYNTHETIC_SEARCH_REAL_TCP_MEDIA",
       "details": {
-        "bytes": 1288740,
+        "bytes": 3277404,
         "segment": 21
       }
     },
     {
-      "at": "2026-10-24T11:43:04.608Z",
+      "at": "2026-10-24T11:58:56.840Z",
       "code": "VIDEO_SEGMENT_BYTES",
       "mode": "CONTROL_SYNTHETIC_SEARCH_REAL_TCP_MEDIA",
       "details": {
-        "bytes": 1298140,
+        "bytes": 3285112,
         "segment": 22
       }
     },
     {
-      "at": "2026-10-24T11:43:04.930Z",
+      "at": "2026-10-24T11:58:57.367Z",
       "code": "VIDEO_SEGMENT_BYTES",
       "mode": "CONTROL_SYNTHETIC_SEARCH_REAL_TCP_MEDIA",
       "details": {
-        "bytes": 1300396,
+        "bytes": 3284360,
         "segment": 23
       }
     },
     {
-      "at": "2026-10-24T11:43:06.462Z",
+      "at": "2026-10-24T11:58:57.945Z",
+      "code": "USER_TRACK_OR_QUALITY",
+      "mode": "CONTROL_SYNTHETIC_SEARCH_REAL_TCP_MEDIA",
+      "details": {
+        "position": 124.001549
+      }
+    },
+    {
+      "at": "2026-10-24T11:58:57.963Z",
+      "code": "VIDEO_LOAD",
+      "mode": "CONTROL_SYNTHETIC_SEARCH_REAL_TCP_MEDIA",
+      "details": {
+        "audio": 1,
+        "height": 480,
+        "position": 124.001549
+      }
+    },
+    {
+      "at": "2026-10-24T11:58:58.004Z",
+      "code": "VIDEO_WAITING",
+      "mode": "CONTROL_SYNTHETIC_SEARCH_REAL_TCP_MEDIA",
+      "details": {
+        "time": 124.002,
+        "duration": null,
+        "width": 0,
+        "height": 0,
+        "trusted": true
+      }
+    },
+    {
+      "at": "2026-10-24T11:58:58.572Z",
+      "code": "VIDEO_SEGMENT_BYTES",
+      "mode": "CONTROL_SYNTHETIC_SEARCH_REAL_TCP_MEDIA",
+      "details": {
+        "bytes": 1973248,
+        "segment": 20
+      }
+    },
+    {
+      "at": "2026-10-24T11:58:58.580Z",
+      "code": "VIDEO_LOADEDMETADATA",
+      "mode": "CONTROL_SYNTHETIC_SEARCH_REAL_TCP_MEDIA",
+      "details": {
+        "time": 124.002,
+        "duration": 150.023,
+        "width": 640,
+        "height": 480,
+        "trusted": true
+      }
+    },
+    {
+      "at": "2026-10-24T11:58:58.581Z",
+      "code": "VIDEO_SEEKING",
+      "mode": "CONTROL_SYNTHETIC_SEARCH_REAL_TCP_MEDIA",
+      "details": {
+        "time": 124.002,
+        "duration": 150.023,
+        "width": 640,
+        "height": 480,
+        "trusted": true
+      }
+    },
+    {
+      "at": "2026-10-24T11:58:58.610Z",
+      "code": "VIDEO_SEEKED",
+      "mode": "CONTROL_SYNTHETIC_SEARCH_REAL_TCP_MEDIA",
+      "details": {
+        "time": 124.002,
+        "duration": 150.023,
+        "width": 640,
+        "height": 480,
+        "trusted": true
+      }
+    },
+    {
+      "at": "2026-10-24T11:58:58.610Z",
+      "code": "VIDEO_PLAYING",
+      "mode": "CONTROL_SYNTHETIC_SEARCH_REAL_TCP_MEDIA",
+      "details": {
+        "time": 124.003,
+        "duration": 150.023,
+        "width": 640,
+        "height": 480,
+        "trusted": true
+      }
+    },
+    {
+      "at": "2026-10-24T11:58:59.031Z",
       "code": "VIDEO_SEEKING",
       "mode": "CONTROL_SYNTHETIC_SEARCH_REAL_TCP_MEDIA",
       "details": {
         "time": 147.5,
         "duration": 150.023,
         "width": 640,
-        "height": 360,
+        "height": 480,
         "trusted": true
       }
     },
     {
-      "at": "2026-10-24T11:43:06.462Z",
+      "at": "2026-10-24T11:58:59.034Z",
       "code": "VIDEO_WAITING",
       "mode": "CONTROL_SYNTHETIC_SEARCH_REAL_TCP_MEDIA",
       "details": {
         "time": 147.5,
         "duration": 150.023,
         "width": 640,
-        "height": 360,
+        "height": 480,
         "trusted": true
       }
     },
     {
-      "at": "2026-10-24T11:43:06.781Z",
+      "at": "2026-10-24T11:58:59.623Z",
       "code": "VIDEO_SEGMENT_BYTES",
       "mode": "CONTROL_SYNTHETIC_SEARCH_REAL_TCP_MEDIA",
       "details": {
-        "bytes": 1297388,
+        "bytes": 1975504,
         "segment": 24
       }
     },
     {
-      "at": "2026-10-24T11:43:06.809Z",
+      "at": "2026-10-24T11:58:59.666Z",
       "code": "VIDEO_SEEKED",
       "mode": "CONTROL_SYNTHETIC_SEARCH_REAL_TCP_MEDIA",
       "details": {
-        "time": 147.5,
-        "duration": 150.186,
+        "time": 147.501,
+        "duration": 150.074,
         "width": 640,
-        "height": 360,
+        "height": 480,
         "trusted": true
       }
     },
     {
-      "at": "2026-10-24T11:43:06.809Z",
+      "at": "2026-10-24T11:58:59.667Z",
       "code": "VIDEO_PLAYING",
       "mode": "CONTROL_SYNTHETIC_SEARCH_REAL_TCP_MEDIA",
       "details": {
         "time": 147.501,
-        "duration": 150.186,
+        "duration": 150.074,
         "width": 640,
-        "height": 360,
+        "height": 480,
         "trusted": true
       }
     },
     {
-      "at": "2026-10-24T11:43:06.938Z",
+      "at": "2026-10-24T11:58:59.801Z",
       "code": "VIDEO_SEGMENT_BYTES",
       "mode": "CONTROL_SYNTHETIC_SEARCH_REAL_TCP_MEDIA",
       "details": {
@@ -497,38 +601,38 @@
       }
     },
     {
-      "at": "2026-10-24T11:43:09.589Z",
+      "at": "2026-10-24T11:59:02.346Z",
       "code": "VIDEO_PAUSE",
       "mode": "CONTROL_SYNTHETIC_SEARCH_REAL_TCP_MEDIA",
       "details": {
-        "time": 150.232,
-        "duration": 150.232,
+        "time": 150.121,
+        "duration": 150.121,
         "width": 640,
-        "height": 360,
+        "height": 480,
         "trusted": true
       }
     },
     {
-      "at": "2026-10-24T11:43:09.594Z",
+      "at": "2026-10-24T11:59:02.346Z",
       "code": "VIDEO_ENDED",
       "mode": "CONTROL_SYNTHETIC_SEARCH_REAL_TCP_MEDIA",
       "details": {
-        "time": 150.232,
-        "duration": 150.232,
+        "time": 150.121,
+        "duration": 150.121,
         "width": 640,
-        "height": 360,
+        "height": 480,
         "trusted": true
       }
     },
     {
-      "at": "2026-10-24T11:43:09.594Z",
+      "at": "2026-10-24T11:59:02.347Z",
       "code": "FULL_FILE_ENDED_EVENT",
       "mode": "CONTROL_SYNTHETIC_SEARCH_REAL_TCP_MEDIA",
       "details": {
         "work": "dandadan",
         "season": 1,
         "episode": 2,
-        "duration": 150.232359
+        "duration": 150.120815
       }
     }
   ]

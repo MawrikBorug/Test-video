@@ -14,3 +14,4 @@ for(const item of JSON.parse(fs.readFileSync('backend/metadata-index.json'))){
 }
 await build({base:'./',define:{__BUILD_SHA__:JSON.stringify(sha)},server:{proxy:{'/api':'http://127.0.0.1:8000'}}});
 fs.writeFileSync('dist/build-info.json',JSON.stringify({version:'torrent-1',sha,builtAt:new Date().toISOString(),transport:'torrent-only',iframe:false}));
+if(fs.existsSync('evidence/verification.json'))fs.copyFileSync('evidence/verification.json','dist/verification.json');

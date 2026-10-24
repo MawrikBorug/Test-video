@@ -8,6 +8,7 @@ async def resolve(info_hash):
     body=known_metadata(info_hash)
     if body:return body,{'source':'developer-metadata-snapshot','snapshotDate':'2026-10-23/24','hashChecked':True,'freshNetworkResponse':False}
     urls=[('itorrents','https://itorrents.org/torrent/'+info_hash.upper()+'.torrent'),
+          ('itorrents-net','https://itorrents.net/torrent/'+info_hash.upper()+'.torrent'),
           ('torrage','https://torrage.info/torrent.php?h='+info_hash.upper()),
           ('btcache','https://btcache.me/torrent/'+info_hash.upper()+'.torrent')]
     attempts=[]

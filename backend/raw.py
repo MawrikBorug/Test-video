@@ -26,6 +26,9 @@ def start_raw(torrent):
                 torrent.last_read_error=e.code
                 print('TORRENT_RANGE_READ_FAILED',e.code,flush=True)
                 self.close_connection=True
+            except RuntimeError:
+                torrent.last_read_error='CANCELLED' if torrent.closed else 'TORRENT_HANDLE_ERROR'
+                self.close_connection=True
             except (BrokenPipeError,ConnectionResetError):self.close_connection=True
     server=http.server.ThreadingHTTPServer(('127.0.0.1',0),Handler)
     server.daemon_threads=True
