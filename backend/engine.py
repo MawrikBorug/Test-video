@@ -5,6 +5,17 @@ from .selection import Refusal, choose_file
 
 ROOT=pathlib.Path(__file__).resolve().parent
 
+def verified_file(files, info_hash, root_name, season=None, episode=None, claimed=None):
+    mapping=json.loads((ROOT/'episode-map.json').read_text())
+    matches=[m for row in mapping if row['season']==season and row['episode']==episode
+             for m in row['matches'] if m['infohash']==info_hash]
+    if not matches:return choose_file(files,season,episode,claimed)
+    m=matches[0];prefix=root_name+'/'
+    f=next((f for f in files if f['index']==m['fileIdx'] and
+            (f['path']==m['filePath'] or f['path'].removeprefix(prefix)==m['filePath']) and f['size']==m['length']),None)
+    if not f:raise Refusal('RESEARCH_FILE_MAP_MISMATCH')
+    return f
+
 class Torrent:
     def __init__(self, magnet, root, *, metadata=None, network=True):
         self.id=secrets.token_hex(16);self.root=pathlib.Path(root)/self.id;self.root.mkdir(parents=True)
@@ -66,19 +77,7 @@ class Torrent:
 
     async def select(self, season=None, episode=None, claimed=None):
         files=await self.metadata()
-        mapping=json.loads((ROOT/'episode-map.json').read_text())
-        matches=[m for row in mapping if row['season']==season and row['episode']==episode for m in row['matches'] if m['infohash']==self.hash]
-        if matches:
-            m=matches[0]
-            # Research paths may be relative to info.name; libtorrent includes
-            # that exact verified root. Strip only this root, never arbitrary
-            # folders or a basename that could collide inside a collection.
-            prefix=self.ti.name()+'/'
-            f=next((f for f in files if f['index']==m['fileIdx'] and
-                    (f['path']==m['filePath'] or f['path'].removeprefix(prefix)==m['filePath']) and f['size']==m['length']),None)
-            if not f:raise Refusal('RESEARCH_FILE_MAP_MISMATCH')
-            self.file=f
-        else:self.file=choose_file(files,season,episode,claimed)
+        self.file=verified_file(files,self.hash,self.ti.name(),season,episode,claimed)
         priorities=[0]*self.fs.num_files();priorities[self.file['index']]=1
         self.handle.prioritize_files(priorities)
         self.handle.set_flags(lt.torrent_flags.sequential_download)
@@ -133,6 +132,8 @@ class Torrent:
                 'alertCounts':self.alert_counts.copy(),'trackerErrors':self.tracker_errors[:],
                 'httpsDiscovery':getattr(self,'https_discovery',None),
                 'transport':'BitTorrent TCP/UDP → libtorrent → FFmpeg → HLS'}
+
+    def downloaded_bytes(self):return self.handle.status().total_payload_download
 
     def close(self):
         if self.closed:return

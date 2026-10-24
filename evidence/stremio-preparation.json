@@ -1,0 +1,62 @@
+{
+  "at": "2026-10-24T16:34:52.052290+00:00",
+  "kind": "STREMIO_SERVER_ADAPTER_PREPARATION",
+  "browserPlaybackDestination": "our own HTMLVideoElement; no iframe or Stremio app",
+  "officialServer": {
+    "version": "4.20.17",
+    "url": "https://dl.strem.io/server/v4.20.17/desktop/server.js",
+    "sha256": "567a397bb11b788571bf1750fd05dd78927f97bec0c9ddeaa6d9cc1eccee3922",
+    "node": "v24.19.0"
+  },
+  "control": {
+    "fixture": "owned generated 150s test pattern and two tagged tones; synthetic search",
+    "metadata": "BEP9 over actual loopback TCP",
+    "initial": {
+      "time": 1.139072,
+      "duration": 150.023,
+      "width": 960,
+      "height": 720,
+      "frames": 30,
+      "buffered": [
+        [
+          0.041888,
+          18.074377
+        ]
+      ]
+    },
+    "far": {
+      "time": 121.460191,
+      "ready": 4,
+      "frames": 112
+    },
+    "endedEvent": true,
+    "automaticFallback": true,
+    "qualitySwitch720to480": true,
+    "jsErrors": [],
+    "evidence": "stremio-browser-control.json"
+  },
+  "validation": {
+    "nodeUnitTests": "3/3 PASS",
+    "pythonBackendTests": "5/5 PASS",
+    "actualResearchEpisodeFileMaps": "20/20 PASS",
+    "finalBrowserTests": "2/2 PASS",
+    "oneEarlierBrowserSuite": "initialization test started before the restarted backend was ready; failed, then passed after explicit readiness wait"
+  },
+  "codespaces": {
+    "state": "CONFIGURATION_PREPARED_NOT_CREATED",
+    "machineAndDefaultSettingsApi": 403,
+    "reason": "Resource not accessible by integration",
+    "externalTorrentPeers": "NOT_RUN",
+    "freeQuotaRemainingForAccount": "UNKNOWN",
+    "privateStremioApiPorts": [
+      11470,
+      12470
+    ],
+    "publicApplicationPort": 8000
+  },
+  "commercialTitlesWithVerifiedPlayback": 0,
+  "requiredTitles": 10,
+  "physicalIPhone": "NOT_RUN",
+  "installedPWA": "NOT_RUN",
+  "acceptanceComplete": false
+}

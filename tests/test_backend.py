@@ -1,7 +1,7 @@
 import asyncio, json, pathlib, subprocess, tempfile, time, unittest
 import libtorrent as lt
 from backend.selection import choose_file, byte_range, Refusal
-from backend.engine import Torrent
+from backend.engine import Torrent,verified_file
 from backend.raw import start_raw
 from backend.media import inspect, segment, manifest
 
@@ -14,6 +14,9 @@ class Selection(unittest.TestCase):
                 self.assertEqual(str(ti.info_hashes().v1),m['infohash'])
                 self.assertEqual(fs.file_size(i),m['length'])
                 self.assertIn(m['filePath'],[fs.file_path(i),fs.file_path(i).removeprefix(ti.name()+'/')])
+                files=[{'index':n,'path':fs.file_path(n),'size':fs.file_size(n)} for n in range(fs.num_files())]
+                selected=verified_file(files,m['infohash'],ti.name(),row['season'],row['episode'],m['fileIdx'])
+                self.assertEqual(selected['index'],i)
     def test_correct_episode_not_provider_index_or_largest(self):
         files=[{'index':0,'path':'S01E01.sample.mp4','size':99999999},{'index':1,'path':'readme.txt','size':6},
                {'index':2,'path':'Series.S01E02.mkv','size':900},{'index':3,'path':'Series.S01E01.mkv','size':800}]

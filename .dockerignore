@@ -5,6 +5,7 @@ dist
 .vercel
 .env*
 scratch
+.runtime
 **/__pycache__
 **/*.pyc
 test-results

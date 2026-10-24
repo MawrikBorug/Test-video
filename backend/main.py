@@ -12,6 +12,10 @@ from .media import inspect, manifest, segment
 from .metadata import resolve as resolve_metadata
 from .discovery import discover
 
+STREMIO_ENABLED=bool(os.environ.get('STREMIO_URL'))
+if STREMIO_ENABLED:
+    from .stremio import StremioTorrent as Torrent
+
 ROOT=pathlib.Path(__file__).resolve().parents[1]
 CATALOG=json.loads((ROOT/'web/catalog.json').read_text())
 WORKS={w['key']:w for w in CATALOG}
@@ -19,7 +23,7 @@ PROVIDERS={'comet':'https://comet.feels.legal','torrentsdb':'https://torrentsdb.
 STORE=pathlib.Path(tempfile.mkdtemp(prefix='test-video-'))
 SECRET=os.environ.get('PLAYBACK_SECRET','').encode() or secrets.token_bytes(32)
 MAX_BYTES=int(os.environ.get('TORRENT_CACHE_BYTES',str(256*1024**2 if os.environ.get('VERCEL') else 12*1024**3)))
-MAX_SESSIONS=max(1,int(os.environ.get('TORRENT_MAX_SESSIONS','2')))
+MAX_SESSIONS=max(1,int(os.environ.get('TORRENT_MAX_SESSIONS','1' if STREMIO_ENABLED else '2')))
 engines={};logs=[];lock=asyncio.Lock();http_cooldowns={}
 def engine_key(data):return f'{data["hash"]}:{data.get("season")}:{data.get("episode")}'
 
@@ -32,7 +36,20 @@ def event(code,**fields):
 
 @asynccontextmanager
 async def lifespan(app):
+    async def retire_idle():
+        while True:
+            await asyncio.sleep(30)
+            async with lock:
+                for key,t in list(engines.items()):
+                    if not t.tasks and time.monotonic()-t.last>300:
+                        if getattr(t,'raw_server',None):t.raw_server.shutdown()
+                        t.close();engines.pop(key,None)
+                        event('IDLE_TORRENT_CLOSED',infoHash=t.hash)
+    reaper=asyncio.create_task(retire_idle())
     yield
+    reaper.cancel()
+    try:await reaper
+    except asyncio.CancelledError:pass
     for t in list(engines.values()):
         if getattr(t,'raw_server',None):t.raw_server.shutdown()
         t.close()
@@ -73,9 +90,17 @@ async def upstream(provider,work,season=1,episode=1):
 @app.get('/api/health')
 async def health():
     from .media import FFMPEG,FFPROBE
-    return {'version':'torrent-1','transport':'libtorrent TCP/UDP','transcoder':'FFmpeg H.264/AAC',
+    stremio_ready=None
+    if STREMIO_ENABLED:
+        from .stremio import BASE
+        try:
+            async with httpx.AsyncClient(timeout=3) as c:
+                r=await c.get(BASE+'/heartbeat');stremio_ready=r.is_success and r.json().get('success') is True
+        except (httpx.HTTPError,ValueError):stremio_ready=False
+    return {'version':'torrent-1','transport':'Stremio EngineFS TCP/UDP' if STREMIO_ENABLED else 'libtorrent TCP/UDP','transcoder':'FFmpeg H.264/AAC',
             'active':len(engines),'ffmpeg':pathlib.Path(FFMPEG).exists(),'ffprobe':pathlib.Path(FFPROBE).exists(),
             'cacheBytes':MAX_BYTES,'sessionLimit':MAX_SESSIONS,'serverless':bool(os.environ.get('VERCEL')),
+            'engineReady':stremio_ready if STREMIO_ENABLED else True,
             'readiness':'runtime-present; torrent-egress-and-real-playback-require-a-probe'}
 
 @app.get('/api/search/{provider}/{key}')
@@ -109,7 +134,7 @@ async def load(data,probe=True):
     key=engine_key(data)
     async with lock:
         t=engines.get(key)
-        if t and (t.closed or (not t.tasks and t.handle.status().total_payload_download>MAX_BYTES)):
+        if t and (t.closed or (not t.tasks and t.downloaded_bytes()>MAX_BYTES)):
             if getattr(t,'raw_server',None):t.raw_server.shutdown()
             t.close();engines.pop(key,None);t=None
         if not t:
@@ -129,12 +154,12 @@ async def load(data,probe=True):
             engines[key]=t
     try:
         if not t.file:
-            if not getattr(t,'https_discovery',None):
+            if not getattr(t,'uses_stremio',False) and not getattr(t,'https_discovery',None):
                 reports=await discover(t)
                 event('HTTPS_TRACKER_DISCOVERY',infoHash=t.hash,reports=reports)
             f=await t.select(data.get('season'),data.get('episode'),data.get('fileIdx'))
             if data.get('verifiedFile') is not None and f['index']!=data['verifiedFile']:raise Refusal('REHYDRATED_FILE_CHANGED')
-            start_raw(t)
+            if not getattr(t,'uses_stremio',False):start_raw(t)
             event('TORRENT_FILE_VERIFIED',work=data.get('work'),season=data.get('season'),episode=data.get('episode'),fileIndex=f['index'],infoHash=t.hash)
         if not t.media and probe:await inspect(t)
         t.last=time.monotonic()

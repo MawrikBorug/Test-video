@@ -2,7 +2,7 @@
 No source URL/ticket/media files enter evidence or Git.
 """
 import json,pathlib,re,subprocess,sys,time,math,tempfile,os
-from scripts.probe_live import request
+from scripts.probe_live import request,BASE
 
 ROOT=pathlib.Path(__file__).resolve().parents[1]
 rows=json.loads((ROOT/'scratch/live-candidates.json').read_text());known={p.stem for p in (ROOT/'backend/metadata').glob('*.torrent')}
@@ -14,13 +14,15 @@ for key in keys:
   t=c['title'];ru=bool(re.search(r'рус|russian|\brus\b|🇷🇺',t,re.I));preferred=bool(re.search(r'1080p|720p',t,re.I))
   return (c['hash'] in known and (ru or key=='slovo'),ru and preferred,ru,preferred)
  cs.sort(key=rank,reverse=True)
- report_file=ROOT/'evidence'/('live-play-'+key+'.json')
+ prefix=os.environ.get('PROBE_EVIDENCE_PREFIX','live-play-')
+ if not re.fullmatch(r'[a-z0-9-]+',prefix):raise ValueError('Invalid evidence prefix')
+ report_file=ROOT/'evidence'/(prefix+key+'.json')
  reports=json.loads(report_file.read_text()) if report_file.exists() else []
  for candidate in cs[:int(os.environ.get('PROBE_LIMIT','2'))]:
   body={'work':key,'season':row['season'] or 1,'episode':row['episode'] or 1,**{k:candidate[k] for k in ['hash','provider','fileIdx']}}
   print('OPEN',key,candidate['hash'],candidate['title'][:150].replace('\n',' / '),flush=True)
   started=time.time();status,j=request('/api/open',body,timeout=170);ticket=j.pop('ticket',None)
-  report={'base':'https://test-video-taupe.vercel.app','sourceBuild':request('/build-info.json')[1],'kind':'LIVE_DEPLOYED_TORRENT','at':time.strftime('%Y-%m-%dT%H:%M:%SZ',time.gmtime()),'request':body,'http':status,'elapsedSeconds':round(time.time()-started,2),'result':j,'segments':[],'playbackInBrowser':'NOT_RUN','physicalIPhone':'NOT_RUN'}
+  report={'base':BASE,'sourceBuild':request('/build-info.json')[1],'kind':'LIVE_DEPLOYED_TORRENT','at':time.strftime('%Y-%m-%dT%H:%M:%SZ',time.gmtime()),'request':body,'http':status,'elapsedSeconds':round(time.time()-started,2),'result':j,'segments':[],'playbackInBrowser':'NOT_RUN','physicalIPhone':'NOT_RUN'}
   if ticket:
    try:
     m=j['media'];audio=next((a['index'] for a in m['audio'] if a['russian']),None)
@@ -31,7 +33,7 @@ for key in keys:
      path=play['path'].rsplit('/',1)[0]
      for n in [0,int(m['duration']*.6//6),max(0,int((m['duration']-12)//6))]:
       file=pathlib.Path(tempfile.mktemp(suffix='.ts'));t=time.time()
-      args=['curl','-sS','--max-time','145','-w','%{http_code}','-o',str(file),'https://test-video-taupe.vercel.app'+path+'/'+str(n)+'.ts']
+      args=['curl','-sS','--max-time','145','-w','%{http_code}','-o',str(file),BASE+path+'/'+str(n)+'.ts']
       proc=subprocess.run(args,capture_output=True,text=True)
       entry={'segment':n,'timeSeconds':n*6,'http':proc.stdout,'bytes':file.stat().st_size if file.exists() else 0,'elapsedSeconds':round(time.time()-t,2)}
       if proc.stdout=='200':
@@ -41,6 +43,6 @@ for key in keys:
       file.unlink(missing_ok=True);report['segments'].append(entry);print('SEGMENT',key,json.dumps(entry),flush=True)
       if proc.stdout!='200':break
    finally:request('/api/close',{'ticket':ticket},timeout=15)
-  reports.append(report);(ROOT/'evidence'/('live-play-'+key+'.json')).write_text(json.dumps(reports,ensure_ascii=False,indent=2))
+  reports.append(report);report_file.write_text(json.dumps(reports,ensure_ascii=False,indent=2))
   print('RESULT',key,json.dumps(report,ensure_ascii=False),flush=True)
   if report['segments'] and all(e.get('decodedStreams') for e in report['segments']):break

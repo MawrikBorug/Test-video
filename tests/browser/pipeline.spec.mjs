@@ -23,5 +23,7 @@ test('CONTROL: real TCP torrent, Russian stream, playback, far seek, switch and 
  expect(errors).toEqual([]);expect(await page.locator('iframe').count()).toBe(0);
  const report={kind:'CONTROL_REAL_TCP_TORRENT_BROWSER',platform:'Chromium Linux; not physical iPhone',search:'SYNTHETIC',media:'OWNED_GENERATED_150S',initial,far,ended:true,qualitySwitchTo480:true,automaticFallbackVerified:true,commercialTitlesVerified:false,errors,
   events:await page.evaluate(()=>JSON.parse(localStorage.getItem('test-video.log.v1')||'[]'))};
- fs.mkdirSync('evidence',{recursive:true});fs.writeFileSync('evidence/browser-control.json',JSON.stringify(report,null,2));await page.screenshot({path:'evidence/browser-control.png',fullPage:true});
+ report.transport=logs.find(e=>e.code==='EXECUTOR_RUNTIME')?.details.transport;
+ const prefix=process.env.CONTROL_EVIDENCE_PREFIX||'browser-control';
+ fs.mkdirSync('evidence',{recursive:true});fs.writeFileSync(`evidence/${prefix}.json`,JSON.stringify(report,null,2));await page.screenshot({path:`evidence/${prefix}.png`,fullPage:true});
 });

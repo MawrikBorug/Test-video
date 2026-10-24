@@ -1,0 +1,15 @@
+{
+  "name": "Test-video · Stremio executor",
+  "image": "mcr.microsoft.com/devcontainers/universal:2",
+  "hostRequirements": {"cpus": 2, "memory": "4gb", "storage": "16gb"},
+  "forwardPorts": [8000],
+  "portsAttributes": {
+    "8000": {"label": "Test-video", "onAutoForward": "openBrowser", "protocol": "http"},
+    "11470": {"onAutoForward": "ignore"},
+    "12470": {"onAutoForward": "ignore"}
+  },
+  "otherPortsAttributes": {"onAutoForward": "ignore"},
+  "postCreateCommand": "bash scripts/cloud-bootstrap.sh",
+  "postStartCommand": "bash scripts/cloud-start.sh",
+  "waitFor": "postCreateCommand"
+}

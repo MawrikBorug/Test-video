@@ -1,5 +1,5 @@
 {
-  "at": "2026-10-24T12:16:43.168597+00:00",
+  "at": "2026-10-24T16:34:52.052290+00:00",
   "kind": "VERIFICATION_SUMMARY",
   "selectionPlaybackAccepted": false,
   "commercialTitlesWithVerifiedPlayback": 0,
@@ -109,5 +109,20 @@
       "receivedBytes": 0,
       "played": false
     }
-  ]
+  ],
+  "previousCommercialProbeSummaryAt": "2026-10-24T12:16:43.168597+00:00",
+  "stremioOwnedTcpControl": {
+    "metadata": "BEP9 from owned loopback seeder; not supplied to receiver",
+    "video": "generated 150-second test pattern",
+    "audio": "two generated tones with eng/rus tags; no speech",
+    "browser": "Chromium/Linux",
+    "playingFrames": true,
+    "farSeek120": true,
+    "audioSwitch": true,
+    "quality720to480": true,
+    "automaticFallback": true,
+    "endedEvent": true,
+    "physicalIPhone": "NOT_RUN",
+    "codespacesWAN": "NOT_RUN"
+  }
 }

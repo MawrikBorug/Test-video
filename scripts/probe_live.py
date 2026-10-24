@@ -1,6 +1,6 @@
 """Bounded live probes of deployed torrent executor. Never stores play tickets."""
-import concurrent.futures,json,pathlib,subprocess,time,sys
-BASE=sys.argv[1] if __name__=='__main__' and len(sys.argv)>1 else 'https://test-video-taupe.vercel.app'
+import concurrent.futures,json,pathlib,subprocess,time,sys,os
+BASE=(sys.argv[1] if __name__=='__main__' and len(sys.argv)>1 else os.environ.get('EXECUTOR_BASE_URL','https://test-video-taupe.vercel.app')).rstrip('/')
 ROOT=pathlib.Path(__file__).resolve().parents[1]
 works=json.loads((ROOT/'web/catalog.json').read_text());out=ROOT/'evidence';out.mkdir(exist_ok=True)
 def request(path,body=None,timeout=32):
