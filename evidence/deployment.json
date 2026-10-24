@@ -1,0 +1,18 @@
+{
+  "kind": "DEPLOYMENT_RECEIPT_NOT_MEDIA_ACCEPTANCE",
+  "target": "production",
+  "state": "READY",
+  "projectId": "prj_6sVyhkrQJS7emtxfGT92HUH64zpJ",
+  "deploymentId": "dpl_FhMZbkN56Y96AxqYLQoHbiyQifp1",
+  "url": "https://test-video-taupe.vercel.app/",
+  "sourceSha": "e9756506577c039944dee26ed4f81ed9bf1303b9",
+  "buildInfoReadback": {
+    "version": "torrent-1",
+    "sha": "e9756506577c039944dee26ed4f81ed9bf1303b9",
+    "builtAt": "2026-10-24T12:17:35.354Z",
+    "transport": "torrent-only",
+    "iframe": false
+  },
+  "selectionPlaybackAccepted": false,
+  "physicalIPhone": "NOT_RUN"
+}

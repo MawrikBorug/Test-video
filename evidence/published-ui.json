@@ -1,0 +1,66 @@
+{
+  "kind": "LIVE_PUBLISHED_UI_SEARCH",
+  "platform": "Chromium Linux 390x844; not physical iPhone",
+  "workCards": 10,
+  "iframes": 0,
+  "selection": "Тетрадь смерти",
+  "season": "1",
+  "episode": "2",
+  "results": 97,
+  "acceptance": "Последняя приёмка: 0/10 произведений с подтверждённым воспроизведением. Поиск: 48/48. Дата: 2026-10-24 12:16 UTC. Контрольный ролик учтён отдельно.",
+  "health": "Исполнитель доступен",
+  "events": [
+    {
+      "at": "2026-10-24T12:17:57.543Z",
+      "code": "EXECUTOR_RUNTIME",
+      "mode": "live",
+      "details": {
+        "version": "torrent-1",
+        "transport": "libtorrent TCP/UDP",
+        "transcoder": "FFmpeg H.264/AAC",
+        "active": 0,
+        "ffmpeg": true,
+        "ffprobe": true,
+        "cacheBytes": 268435456,
+        "serverless": true,
+        "readiness": "runtime-present; torrent-egress-and-real-playback-require-a-probe"
+      }
+    },
+    {
+      "at": "2026-10-24T12:17:58.091Z",
+      "code": "LIVE_SEARCH",
+      "mode": "live",
+      "details": {
+        "provider": "Comet",
+        "work": "deathnote",
+        "season": 1,
+        "episode": 2,
+        "reported": 59,
+        "torrentCandidates": 58,
+        "unique": 58
+      }
+    },
+    {
+      "at": "2026-10-24T12:17:58.756Z",
+      "code": "LIVE_SEARCH",
+      "mode": "live",
+      "details": {
+        "provider": "TorrentsDB",
+        "work": "deathnote",
+        "season": 1,
+        "episode": 2,
+        "reported": 50,
+        "torrentCandidates": 50,
+        "unique": 97
+      }
+    }
+  ],
+  "build": {
+    "version": "torrent-1",
+    "sha": "e9756506577c039944dee26ed4f81ed9bf1303b9",
+    "builtAt": "2026-10-24T12:17:35.354Z",
+    "transport": "torrent-only",
+    "iframe": false
+  },
+  "errors": []
+}
