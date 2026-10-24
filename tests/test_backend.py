@@ -6,6 +6,14 @@ from backend.raw import start_raw
 from backend.media import inspect, segment, manifest
 
 class Selection(unittest.TestCase):
+    def test_all_imported_episode_maps_against_real_info_dictionary(self):
+        root=pathlib.Path('backend');rows=json.loads((root/'episode-map.json').read_text())
+        for row in rows:
+            for m in row['matches']:
+                ti=lt.torrent_info((root/'metadata'/(m['infohash']+'.torrent')).read_bytes());fs=ti.files();i=m['fileIdx']
+                self.assertEqual(str(ti.info_hashes().v1),m['infohash'])
+                self.assertEqual(fs.file_size(i),m['length'])
+                self.assertIn(m['filePath'],[fs.file_path(i),fs.file_path(i).removeprefix(ti.name()+'/')])
     def test_correct_episode_not_provider_index_or_largest(self):
         files=[{'index':0,'path':'S01E01.sample.mp4','size':99999999},{'index':1,'path':'readme.txt','size':6},
                {'index':2,'path':'Series.S01E02.mkv','size':900},{'index':3,'path':'Series.S01E01.mkv','size':800}]

@@ -125,7 +125,7 @@ async def load(data,probe=True):
             f=await t.select(data.get('season'),data.get('episode'),data.get('fileIdx'))
             if data.get('verifiedFile') is not None and f['index']!=data['verifiedFile']:raise Refusal('REHYDRATED_FILE_CHANGED')
             start_raw(t)
-            event('TORRENT_FILE_VERIFIED',work=data.get('work'),season=data.get('season'),episode=data.get('episode'),fileIndex=f['index'],infoHash=key)
+            event('TORRENT_FILE_VERIFIED',work=data.get('work'),season=data.get('season'),episode=data.get('episode'),fileIndex=f['index'],infoHash=t.hash)
         if not t.media and probe:await inspect(t)
         t.last=time.monotonic()
         return t

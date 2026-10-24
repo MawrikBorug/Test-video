@@ -1,0 +1,42 @@
+[
+  {
+    "kind": "LIVE_DEPLOYED_TORRENT",
+    "at": "2026-10-24T11:46:10Z",
+    "request": {
+      "work": "slovo",
+      "season": 1,
+      "episode": 1,
+      "hash": "233587375c21491552e04c10a3fd3b6fa05a47af",
+      "provider": "torrentsdb",
+      "fileIdx": 0
+    },
+    "http": 422,
+    "elapsedSeconds": 1.13,
+    "result": {
+      "error": "RESEARCH_FILE_MAP_MISMATCH"
+    },
+    "segments": [],
+    "playbackInBrowser": "NOT_RUN",
+    "physicalIPhone": "NOT_RUN"
+  },
+  {
+    "kind": "LIVE_DEPLOYED_TORRENT",
+    "at": "2026-10-24T11:46:55Z",
+    "request": {
+      "work": "slovo",
+      "season": 1,
+      "episode": 1,
+      "hash": "8dd27aeff2c936bedd2c73e655ec55dc52f3aa17",
+      "provider": "comet",
+      "fileIdx": 7
+    },
+    "http": 422,
+    "elapsedSeconds": 45.81,
+    "result": {
+      "error": "METADATA_TIMEOUT"
+    },
+    "segments": [],
+    "playbackInBrowser": "NOT_RUN",
+    "physicalIPhone": "NOT_RUN"
+  }
+]

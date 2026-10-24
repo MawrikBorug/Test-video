@@ -1,0 +1,22 @@
+[
+  {
+    "kind": "LIVE_DEPLOYED_TORRENT",
+    "at": "2026-10-24T11:46:56Z",
+    "request": {
+      "work": "fallout",
+      "season": 1,
+      "episode": 1,
+      "hash": "11e3b4beb33b39e6526f961bc983ffec55057464",
+      "provider": "comet",
+      "fileIdx": 0
+    },
+    "http": 422,
+    "elapsedSeconds": 0.41,
+    "result": {
+      "error": "RESEARCH_FILE_MAP_MISMATCH"
+    },
+    "segments": [],
+    "playbackInBrowser": "NOT_RUN",
+    "physicalIPhone": "NOT_RUN"
+  }
+]

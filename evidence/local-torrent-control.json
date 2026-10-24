@@ -1,0 +1,62 @@
+{
+  "kind": "CONTROL_REAL_TCP_TORRENT",
+  "fixture": "owned generated S01E02, 150 seconds, two tagged audio streams",
+  "hash": "d7f3e41e01b172716d2dbec78750117549638104",
+  "selectedFile": {
+    "index": 0,
+    "path": "control/Control.S01E02.mkv",
+    "size": 9979608
+  },
+  "media": {
+    "duration": 150.023,
+    "video": {
+      "index": 0,
+      "codec": "h264",
+      "width": 320,
+      "height": 180
+    },
+    "audio": [
+      {
+        "index": 1,
+        "language": "eng",
+        "title": "CONTROL EN",
+        "codec": "aac",
+        "channels": 1,
+        "russian": false
+      },
+      {
+        "index": 2,
+        "language": "rus",
+        "title": "CONTROL RU",
+        "codec": "aac",
+        "channels": 1,
+        "russian": true
+      }
+    ],
+    "qualities": [
+      180
+    ],
+    "tracksInspected": true
+  },
+  "firstSegmentBytes": 533920,
+  "seek120SegmentBytes": 591072,
+  "receivedAtFirstSegment": 757514,
+  "fileSize": 9979608,
+  "beforeFullDownload": true,
+  "torrentStatus": {
+    "infoHash": "d7f3e41e01b172716d2dbec78750117549638104",
+    "peers": 1,
+    "seeds": 1,
+    "receivedBytes": 9108715,
+    "downloadBytesPerSecond": 435706,
+    "verifiedPieces": 139,
+    "metadataVerified": true,
+    "file": {
+      "index": 0,
+      "path": "control/Control.S01E02.mkv",
+      "size": 9979608
+    },
+    "transport": "BitTorrent TCP/UDP → libtorrent → FFmpeg → HLS"
+  },
+  "commercialTitlesVerified": false
+}

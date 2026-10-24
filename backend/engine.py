@@ -64,7 +64,13 @@ class Torrent:
         mapping=json.loads((ROOT/'episode-map.json').read_text())
         matches=[m for row in mapping if row['season']==season and row['episode']==episode for m in row['matches'] if m['infohash']==self.hash]
         if matches:
-            m=matches[0];f=next((f for f in files if f['index']==m['fileIdx'] and f['path']==m['filePath'] and f['size']==m['length']),None)
+            m=matches[0]
+            # Research paths may be relative to info.name; libtorrent includes
+            # that exact verified root. Strip only this root, never arbitrary
+            # folders or a basename that could collide inside a collection.
+            prefix=self.ti.name()+'/'
+            f=next((f for f in files if f['index']==m['fileIdx'] and
+                    (f['path']==m['filePath'] or f['path'].removeprefix(prefix)==m['filePath']) and f['size']==m['length']),None)
             if not f:raise Refusal('RESEARCH_FILE_MAP_MISMATCH')
             self.file=f
         else:self.file=choose_file(files,season,episode,claimed)

@@ -1,0 +1,46 @@
+[
+  {
+    "kind": "INVALID_PROBE_TARGET_CLIENT_BUG",
+    "at": "2026-10-24T11:45:54Z",
+    "request": {
+      "work": "slovo",
+      "season": 1,
+      "episode": 1,
+      "hash": "233587375c21491552e04c10a3fd3b6fa05a47af",
+      "provider": "torrentsdb",
+      "fileIdx": 0
+    },
+    "http": 403,
+    "elapsedSeconds": 0.04,
+    "result": {
+      "error": "NON_JSON_OR_NETWORK",
+      "clientError": ""
+    },
+    "segments": [],
+    "playbackInBrowser": "NOT_RUN",
+    "physicalIPhone": "NOT_RUN",
+    "basis": "Imported helper incorrectly treated work name as base URL. Request did not reach deployed stand."
+  },
+  {
+    "kind": "INVALID_PROBE_TARGET_CLIENT_BUG",
+    "at": "2026-10-24T11:45:54Z",
+    "request": {
+      "work": "slovo",
+      "season": 1,
+      "episode": 1,
+      "hash": "8dd27aeff2c936bedd2c73e655ec55dc52f3aa17",
+      "provider": "comet",
+      "fileIdx": 7
+    },
+    "http": 403,
+    "elapsedSeconds": 0.04,
+    "result": {
+      "error": "NON_JSON_OR_NETWORK",
+      "clientError": ""
+    },
+    "segments": [],
+    "playbackInBrowser": "NOT_RUN",
+    "physicalIPhone": "NOT_RUN",
+    "basis": "Imported helper incorrectly treated work name as base URL. Request did not reach deployed stand."
+  }
+]

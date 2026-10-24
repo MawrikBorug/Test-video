@@ -1,0 +1,46 @@
+[
+  {
+    "kind": "INVALID_PROBE_TARGET_CLIENT_BUG",
+    "at": "2026-10-24T11:45:54Z",
+    "request": {
+      "work": "fallout",
+      "season": 1,
+      "episode": 1,
+      "hash": "11e3b4beb33b39e6526f961bc983ffec55057464",
+      "provider": "comet",
+      "fileIdx": 0
+    },
+    "http": 403,
+    "elapsedSeconds": 0.04,
+    "result": {
+      "error": "NON_JSON_OR_NETWORK",
+      "clientError": ""
+    },
+    "segments": [],
+    "playbackInBrowser": "NOT_RUN",
+    "physicalIPhone": "NOT_RUN",
+    "basis": "Imported helper incorrectly treated work name as base URL. Request did not reach deployed stand."
+  },
+  {
+    "kind": "INVALID_PROBE_TARGET_CLIENT_BUG",
+    "at": "2026-10-24T11:45:54Z",
+    "request": {
+      "work": "fallout",
+      "season": 1,
+      "episode": 1,
+      "hash": "c466a41981f4b622e22144cafc399926b79ffd2b",
+      "provider": "comet",
+      "fileIdx": 7
+    },
+    "http": 403,
+    "elapsedSeconds": 0.04,
+    "result": {
+      "error": "NON_JSON_OR_NETWORK",
+      "clientError": ""
+    },
+    "segments": [],
+    "playbackInBrowser": "NOT_RUN",
+    "physicalIPhone": "NOT_RUN",
+    "basis": "Imported helper incorrectly treated work name as base URL. Request did not reach deployed stand."
+  }
+]

@@ -3,9 +3,9 @@ import catalog from './catalog.json';
 import './style.css';
 import {providers,normalize,merge,videoId,jsonRequest} from './sources.mjs';
 const $=id=>document.getElementById(id),video=$('video');
-const state={work:catalog[0],season:1,episode:1,episodes:[],candidates:[],generation:0,controller:null,ready:false,ticket:null,hls:null,running:false,active:null,log:[],limit:20,statusTimer:null,stallTimer:null,lastProgress:0,played:false,queue:[],trying:false};
+const state={work:catalog[0],season:1,episode:1,episodes:[],candidates:[],generation:0,controller:null,ready:false,ticket:null,hls:null,running:false,active:null,log:[],limit:20,statusTimer:null,stallTimer:null,lastProgress:0,played:false,queue:[],trying:false,dataMode:'live',failing:false};
 const paintLog=()=>{$('log').replaceChildren(...state.log.slice(-70).reverse().map(row=>{const el=document.createElement('div');el.className='logrow'+(/FAIL|ERROR|TIMEOUT|BLOCK|UNAVAILABLE|MISMATCH/.test(row.code)?' bad':'');const time=document.createElement('time');time.textContent=row.at.slice(11,19);const text=document.createElement('span');text.textContent=row.code+' '+JSON.stringify(row.details);el.append(time,text);return el}));};
-function log(code,details={}){state.log.push({at:new Date().toISOString(),code,mode:'live',details});if(state.log.length>350)state.log.shift();paintLog();try{localStorage.setItem('test-video.log.v1',JSON.stringify(state.log))}catch{}}
+function log(code,details={}){state.log.push({at:new Date().toISOString(),code,mode:state.dataMode,details});if(state.log.length>350)state.log.shift();paintLog();try{localStorage.setItem('test-video.log.v1',JSON.stringify(state.log))}catch{}}
 function status(text){$('status').textContent=text;}
 const safeError=e=>String(e.message||e).replace(/https?:\/\/\S+/g,'[URL]').replace(/[A-Za-z0-9_\-]{64,}/g,'[скрыто]').slice(0,220);
 function step(id,value){$('step-'+id).className=value;}
@@ -90,11 +90,11 @@ async function nextCandidate(generation){
  }catch(e){if(generation!==state.generation)return;await failCandidate(safeError(e),generation);}
 }
 async function failCandidate(error,generation){
- if(generation!==state.generation)return;
+ if(generation!==state.generation||state.failing)return;state.failing=true;
  const c=state.active;c.state='failed';c.error=error;log('SOURCE_FAILED',{hash:c.hash,error});
  clearInterval(state.statusTimer);clearTimeout(state.stallTimer);state.hls?.destroy();state.hls=null;video.pause();video.removeAttribute('src');video.load();
  if(state.ticket){const ticket=state.ticket;state.ticket=null;await request('/api/close',{method:'POST',body:{ticket},timeout:6000}).catch(()=>{});}
- if(generation!==state.generation)return;state.trying=true;renderCandidates();status('Источник отказал. Проверяем следующую раздачу…');await nextCandidate(generation);
+ state.failing=false;if(generation!==state.generation)return;state.trying=true;renderCandidates();status('Источник отказал. Проверяем следующую раздачу…');await nextCandidate(generation);
 }
 async function playAt(position=video.currentTime||0,generation=state.generation){
  const result=await request('/api/play',{method:'POST',body:{ticket:state.ticket,audio:Number($('audio').value),height:Number($('quality').value)},signal:state.controller.signal});if(generation!==state.generation)return;
@@ -111,9 +111,9 @@ async function playAt(position=video.currentTime||0,generation=state.generation)
 }
 $('audio').onchange=$('quality').onchange=()=>{const p=video.currentTime||0;log('USER_TRACK_OR_QUALITY',{position:p});playAt(p).catch(e=>failCandidate(safeError(e),state.generation))};
 $('resume').onclick=()=>video.play().then(()=>{$('resume').hidden=true}).catch(e=>log('PLAY_FAILED',{error:safeError(e)}));
-for(const name of ['playing','pause','seeking','seeked','ended','error','waiting','stalled','loadedmetadata'])video.addEventListener(name,()=>{
+for(const name of ['playing','pause','seeking','seeked','ended','error','waiting','stalled','loadedmetadata'])video.addEventListener(name,event=>{
  if(!state.running||!state.ticket)return;
- const detail={time:Number(video.currentTime.toFixed(3)),duration:Number.isFinite(video.duration)?Number(video.duration.toFixed(3)):null,width:video.videoWidth,height:video.videoHeight,trusted:true};
+ const detail={time:Number(video.currentTime.toFixed(3)),duration:Number.isFinite(video.duration)?Number(video.duration.toFixed(3)):null,width:video.videoWidth,height:video.videoHeight,trusted:event.isTrusted};
  if(name==='error')detail.error=video.error?.code;
  log('VIDEO_'+name.toUpperCase(),detail);
  if(name==='playing'){state.played=true;state.lastProgress=performance.now();clearTimeout(state.stallTimer);step('video','done');status(`Воспроизводится: ${state.work.ru}${state.work.type==='series'?' · S'+state.season+'E'+state.episode:''}. ${$('audio').selectedOptions[0]?.textContent||''}`);}
@@ -124,7 +124,7 @@ video.addEventListener('timeupdate',()=>{if(!state.running||!state.ticket)return
 $('export').onclick=()=>{const report={schemaVersion:1,build:__BUILD_SHA__,exportedAt:new Date().toISOString(),platform:{userAgent:navigator.userAgent,standalone:matchMedia('(display-mode: standalone)').matches},selection:selection(),checks:{physicalIPhone:'NOT_RUN_BY_DEVELOPER',pwa:'NOT_RUN_BY_DEVELOPER'},events:state.log};const url=URL.createObjectURL(new Blob([JSON.stringify(report,null,2)],{type:'application/json'}));const a=document.createElement('a');a.href=url;a.download='test-video-'+new Date().toISOString().replaceAll(':','-')+'.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000)};
 async function init(){
  $('build').textContent=__BUILD_SHA__.slice(0,8);try{state.log=JSON.parse(localStorage.getItem('test-video.log.v1')||'[]').slice(-200)}catch{}
- try{const h=await request('/api/health',{timeout:12000});state.ready=!!h.ffmpeg&&!!h.ffprobe;$('connection').textContent=state.ready?'Исполнитель доступен':'FFmpeg недоступен';$('connection').className='badge '+(state.ready?'ok':'warn');$('overall').textContent=state.ready?'Торрент-исполнитель запущен':'Исполнитель не готов';$('environment').textContent=state.ready?'Библиотеки готовы. Получение байтов и просмотр проверяются отдельно для каждой раздачи.':'Нужна работающая серверная среда с libtorrent и FFmpeg.';for(const text of [h.transport,h.transcoder,'Кэш: '+(h.cacheBytes/1048576).toFixed(0)+' МиБ',h.serverless?'Vercel Function · cold start возможен':'Серверный процесс']){const span=document.createElement('span');span.textContent=text;$('health').append(span)}log('EXECUTOR_RUNTIME',h);}
+ try{const h=await request('/api/health',{timeout:12000});state.dataMode=h.control?'CONTROL_SYNTHETIC_SEARCH_REAL_TCP_MEDIA':'live';state.ready=!!h.ffmpeg&&!!h.ffprobe;$('connection').textContent=state.ready?'Исполнитель доступен':'FFmpeg недоступен';$('connection').className='badge '+(state.ready?'ok':'warn');$('overall').textContent=state.ready?'Торрент-исполнитель запущен':'Исполнитель не готов';$('environment').textContent=state.ready?'Библиотеки готовы. Получение байтов и просмотр проверяются отдельно для каждой раздачи.':'Нужна работающая серверная среда с libtorrent и FFmpeg.';for(const text of [h.transport,h.transcoder,'Кэш: '+(h.cacheBytes/1048576).toFixed(0)+' МиБ',h.serverless?'Vercel Function · cold start возможен':'Серверный процесс']){const span=document.createElement('span');span.textContent=text;$('health').append(span)}log('EXECUTOR_RUNTIME',h);}
  catch(e){$('connection').textContent='Исполнитель недоступен';$('connection').className='badge warn';$('overall').textContent='Видео пока заблокировано';$('environment').textContent='Поиск можно проверить. Сервер получения торрентов не ответил: причина в диагностике.';log('EXECUTOR_UNAVAILABLE',{error:safeError(e)});}
  await selectWork(state.work);
  if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js').catch(()=>{});

@@ -1,0 +1,22 @@
+[
+  {
+    "kind": "LIVE_DEPLOYED_TORRENT",
+    "at": "2026-10-24T11:46:56Z",
+    "request": {
+      "work": "dandadan",
+      "season": 1,
+      "episode": 1,
+      "hash": "7eebe91290da5dc0e209296e654a71d0aa8d73e2",
+      "provider": "comet",
+      "fileIdx": 2
+    },
+    "http": 422,
+    "elapsedSeconds": 46.1,
+    "result": {
+      "error": "METADATA_TIMEOUT"
+    },
+    "segments": [],
+    "playbackInBrowser": "NOT_RUN",
+    "physicalIPhone": "NOT_RUN"
+  }
+]
