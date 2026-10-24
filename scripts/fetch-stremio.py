@@ -6,7 +6,8 @@ URL='https://dl.strem.io/server/v4.20.17/desktop/server.js'
 SHA256='567a397bb11b788571bf1750fd05dd78927f97bec0c9ddeaa6d9cc1eccee3922'
 
 def main():
-    target=ROOT/'.runtime/bin/stremio-server.js'
+    # The frontend package uses type=module; EngineFS is a CommonJS bundle.
+    target=ROOT/'.runtime/bin/stremio-server.cjs'
     target.parent.mkdir(parents=True,exist_ok=True)
     if target.exists() and hashlib.sha256(target.read_bytes()).hexdigest()==SHA256:
         print('Stremio EngineFS 4.20.17: cached checksum verified');return

@@ -18,7 +18,7 @@ export FFMPEG_BIN="$(command -v ffmpeg)" FFPROBE_BIN="$(command -v ffprobe)"
 PLAYBACK_SECRET=$(cat .runtime/playback-secret)
 export PLAYBACK_SECRET
 APP_PATH="$STREMIO_STATE_PATH" CASTING_DISABLED=1 NO_CORS=1 \
-  node .runtime/bin/stremio-server.js >.runtime/stremio.log 2>&1 &
+  node .runtime/bin/stremio-server.cjs >.runtime/stremio.log 2>&1 &
 stremio_pid=$!
 cleanup() {
   kill "$stremio_pid" "${backend_pid:-}" 2>/dev/null || true

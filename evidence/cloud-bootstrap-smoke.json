@@ -1,0 +1,44 @@
+{
+  "kind": "LOCAL_CLOUD_BOOTSTRAP_SMOKE",
+  "at": "2026-10-24T16:39:43.846919+00:00",
+  "sourceBaseSha": "f3a537d30be63ef6e313e0cf115a87ca47e32406",
+  "sourcePatchUnderTest": [
+    "scripts/fetch-stremio.py: use .cjs",
+    "scripts/cloud-run.sh: use .cjs"
+  ],
+  "environment": "managed Linux, not GitHub Codespaces",
+  "cleanVirtualenvAndNpmInstall": "PASS",
+  "officialStremioDownloadSha256": "PASS",
+  "firstAttemptError": "require is not defined in ES module scope",
+  "correction": "CommonJS bundle is launched with .cjs extension inside type=module frontend repo",
+  "startAfterCorrection": "PASS",
+  "secondStartDidNotDuplicateService": "PASS",
+  "healthHttp": 200,
+  "health": {
+    "version": "torrent-1",
+    "transport": "Stremio EngineFS TCP/UDP",
+    "transcoder": "FFmpeg H.264/AAC",
+    "active": 0,
+    "ffmpeg": true,
+    "ffprobe": true,
+    "cacheBytes": 536870912,
+    "sessionLimit": 1,
+    "serverless": false,
+    "engineReady": true,
+    "readiness": "runtime-present; torrent-egress-and-real-playback-require-a-probe"
+  },
+  "uiHttp": 200,
+  "corsPreflightHttp": 200,
+  "allowOrigin": "https://test-video-taupe.vercel.app",
+  "liveSearch": {
+    "work": "shrek",
+    "provider": "comet",
+    "http": 200,
+    "candidates": 466,
+    "error": null
+  },
+  "actualCodespacesMachine": "NOT_CREATED",
+  "externalTorrentPlayback": "NOT_RUN",
+  "physicalIPhone": "NOT_RUN",
+  "commercialPlaybackAccepted": false
+}

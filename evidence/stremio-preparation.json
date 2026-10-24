@@ -58,5 +58,6 @@
   "requiredTitles": 10,
   "physicalIPhone": "NOT_RUN",
   "installedPWA": "NOT_RUN",
-  "acceptanceComplete": false
+  "acceptanceComplete": false,
+  "cloudBootstrapSmoke": "PASS after .cjs fix; evidence/cloud-bootstrap-smoke.json"
 }
