@@ -1,0 +1,16 @@
+{
+  "kind": "VERCEL_PUBLICATION_READBACK",
+  "at": "2026-10-24T16:44:56.446500+00:00",
+  "sourceSha": "dfda14cd103b332f2fea1bd3e94beb20a9f72928",
+  "deploymentId": "dpl_AB1HPBu7sHQbz9mYsL4eqDdpfYuU",
+  "publicUrl": "https://test-video-taupe.vercel.app/",
+  "buildInfoReadback": "MATCH",
+  "healthHttp": 200,
+  "activeTransport": "libtorrent TCP/UDP",
+  "stremioTransportOnThisVercelDeployment": false,
+  "codespacesSetupLinkPresent": true,
+  "commercialVerified": 0,
+  "requiredTitles": 10,
+  "codespacesActualDeployment": "NOT_CREATED",
+  "acceptanceComplete": false
+}

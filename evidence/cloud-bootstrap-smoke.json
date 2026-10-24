@@ -4,7 +4,9 @@
   "sourceBaseSha": "f3a537d30be63ef6e313e0cf115a87ca47e32406",
   "sourcePatchUnderTest": [
     "scripts/fetch-stremio.py: use .cjs",
-    "scripts/cloud-run.sh: use .cjs"
+    "scripts/cloud-run.sh: use .cjs",
+    "cloud-start.sh: own process session",
+    "cloud-run.sh: locked runner PID"
   ],
   "environment": "managed Linux, not GitHub Codespaces",
   "cleanVirtualenvAndNpmInstall": "PASS",
@@ -40,5 +42,11 @@
   "actualCodespacesMachine": "NOT_CREATED",
   "externalTorrentPlayback": "NOT_RUN",
   "physicalIPhone": "NOT_RUN",
-  "commercialPlaybackAccepted": false
+  "commercialPlaybackAccepted": false,
+  "lifecycleRunnerIssue": "nohup alone did not survive the command runner process-group cleanup",
+  "lifecycleCorrection": "setsid gives the application its own process session; no idle-timeout keepalive",
+  "processSurvivedLifecycleCommandExit": true,
+  "runnerPidBeforeRepeat": 17220,
+  "runnerPidAfterRepeat": 17220,
+  "sameRunnerAfterRepeat": true
 }

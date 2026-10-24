@@ -2,7 +2,9 @@
 set -euo pipefail
 cd "$(dirname "$0")/.."
 mkdir -p .runtime
-nohup bash scripts/cloud-run.sh >.runtime/cloud.log 2>&1 </dev/null &
+# Lifecycle command runners may terminate their process group on return.
+# Give the application its own session, without changing the VM idle timeout.
+setsid nohup bash scripts/cloud-run.sh >.runtime/cloud.log 2>&1 </dev/null &
 .venv/bin/python - <<'PY'
 import time,urllib.request,json
 for _ in range(100):

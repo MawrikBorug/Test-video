@@ -4,6 +4,7 @@ cd "$(dirname "$0")/.."
 mkdir -p .runtime
 exec 9>.runtime/cloud.lock
 flock -n 9 || exit 0
+printf '%s\n' "$$" >.runtime/cloud.pid
 .venv/bin/python - <<'PY'
 import socket
 for port in [11470,8000]:
@@ -21,6 +22,7 @@ APP_PATH="$STREMIO_STATE_PATH" CASTING_DISABLED=1 NO_CORS=1 \
   node .runtime/bin/stremio-server.cjs >.runtime/stremio.log 2>&1 &
 stremio_pid=$!
 cleanup() {
+  rm -f .runtime/cloud.pid
   kill "$stremio_pid" "${backend_pid:-}" 2>/dev/null || true
   wait "$stremio_pid" "${backend_pid:-}" 2>/dev/null || true
 }
