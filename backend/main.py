@@ -39,7 +39,7 @@ app.add_middleware(CORSMiddleware,allow_origins=['https://mawrikborug.github.io'
 @app.exception_handler(Refusal)
 async def refused(request,error):
     event(error.code)
-    return JSONResponse({'error':error.code},status_code=422)
+    return JSONResponse({'error':error.code,'diagnostics':getattr(error,'diagnostics',None)},status_code=422)
 
 def work_query(key,season,episode):
     if key not in WORKS:raise Refusal('UNKNOWN_WORK')
@@ -129,7 +129,10 @@ async def load(data,probe=True):
         if not t.media and probe:await inspect(t)
         t.last=time.monotonic()
         return t
-    except BaseException:
+    except BaseException as error:
+        if isinstance(error,Refusal):
+            error.diagnostics=t.status()
+            event('TORRENT_FAILURE_DIAGNOSTICS',**error.diagnostics)
         if getattr(t,'raw_server',None):t.raw_server.shutdown()
         t.close();engines.pop(key,None)
         raise

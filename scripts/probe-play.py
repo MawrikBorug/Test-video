@@ -14,7 +14,8 @@ for key in keys:
   t=c['title'];ru=bool(re.search(r'рус|russian|\brus\b|🇷🇺',t,re.I));preferred=bool(re.search(r'1080p|720p',t,re.I))
   return (c['hash'] in known and (ru or key=='slovo'),ru and preferred,ru,preferred)
  cs.sort(key=rank,reverse=True)
- reports=[]
+ report_file=ROOT/'evidence'/('live-play-'+key+'.json')
+ reports=json.loads(report_file.read_text()) if report_file.exists() else []
  for candidate in cs[:2]:
   body={'work':key,'season':row['season'] or 1,'episode':row['episode'] or 1,**{k:candidate[k] for k in ['hash','provider','fileIdx']}}
   print('OPEN',key,candidate['hash'],candidate['title'][:150].replace('\n',' / '),flush=True)

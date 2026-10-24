@@ -1,0 +1,22 @@
+[
+  {
+    "kind": "LIVE_DEPLOYED_TORRENT",
+    "at": "2026-10-24T11:48:28Z",
+    "request": {
+      "work": "deathnote",
+      "season": 1,
+      "episode": 1,
+      "hash": "79f080085c772a548ba60046eb888a941b5d964c",
+      "provider": "comet",
+      "fileIdx": 0
+    },
+    "http": 422,
+    "elapsedSeconds": 45.88,
+    "result": {
+      "error": "METADATA_TIMEOUT"
+    },
+    "segments": [],
+    "playbackInBrowser": "NOT_RUN",
+    "physicalIPhone": "NOT_RUN"
+  }
+]

@@ -18,5 +18,25 @@
     "segments": [],
     "playbackInBrowser": "NOT_RUN",
     "physicalIPhone": "NOT_RUN"
+  },
+  {
+    "kind": "LIVE_DEPLOYED_TORRENT",
+    "at": "2026-10-24T11:47:41Z",
+    "request": {
+      "work": "fallout",
+      "season": 1,
+      "episode": 1,
+      "hash": "c466a41981f4b622e22144cafc399926b79ffd2b",
+      "provider": "comet",
+      "fileIdx": 7
+    },
+    "http": 422,
+    "elapsedSeconds": 45.75,
+    "result": {
+      "error": "METADATA_TIMEOUT"
+    },
+    "segments": [],
+    "playbackInBrowser": "NOT_RUN",
+    "physicalIPhone": "NOT_RUN"
   }
 ]

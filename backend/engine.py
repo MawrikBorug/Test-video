@@ -29,12 +29,17 @@ class Torrent:
         self.handle=self.session.add_torrent(params)
         self.closed=False;self.last=time.monotonic();self.received=0;self._cache=collections.OrderedDict()
         self._events={};self._lock=threading.Lock();self.error=None
+        self.alert_counts={};self.tracker_errors=[]
         self.thread=threading.Thread(target=self._alerts,daemon=True);self.thread.start()
         self.file=None;self.media=None;self.segments={};self.tasks={};self.selected_at=None
 
     def _alerts(self):
         while not self.closed:
             for a in self.session.pop_alerts():
+                name=type(a).__name__;self.alert_counts[name]=self.alert_counts.get(name,0)+1
+                if isinstance(a,lt.tracker_error_alert):
+                    self.tracker_errors.append({'code':a.error.value(),'message':a.error.message()[:120]})
+                    self.tracker_errors=self.tracker_errors[-6:]
                 if isinstance(a,lt.read_piece_alert):
                     with self._lock:
                         if a.error.value()==0:
@@ -120,7 +125,9 @@ class Torrent:
         return {'infoHash':self.hash,'peers':s.num_peers,'seeds':s.num_seeds,
                 'receivedBytes':s.total_payload_download,'downloadBytesPerSecond':s.download_rate,
                 'verifiedPieces':s.num_pieces,'metadataVerified':self.handle.has_metadata(),
-                'file':self.file,'transport':'BitTorrent TCP/UDP → libtorrent → FFmpeg → HLS'}
+                'file':self.file,'dhtNodes':self.session.status().dht_nodes,'listenPortReady':self.session.listen_port()>0,
+                'alertCounts':self.alert_counts.copy(),'trackerErrors':self.tracker_errors[:],
+                'transport':'BitTorrent TCP/UDP → libtorrent → FFmpeg → HLS'}
 
     def close(self):
         if self.closed:return

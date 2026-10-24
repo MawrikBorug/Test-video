@@ -18,5 +18,25 @@
     "segments": [],
     "playbackInBrowser": "NOT_RUN",
     "physicalIPhone": "NOT_RUN"
+  },
+  {
+    "kind": "LIVE_DEPLOYED_TORRENT",
+    "at": "2026-10-24T11:47:42Z",
+    "request": {
+      "work": "dandadan",
+      "season": 1,
+      "episode": 1,
+      "hash": "13978ae18c7b67fba9ee4ea2863d832943c955c2",
+      "provider": "comet",
+      "fileIdx": 5
+    },
+    "http": 422,
+    "elapsedSeconds": 45.88,
+    "result": {
+      "error": "METADATA_TIMEOUT"
+    },
+    "segments": [],
+    "playbackInBrowser": "NOT_RUN",
+    "physicalIPhone": "NOT_RUN"
   }
 ]
