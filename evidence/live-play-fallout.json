@@ -38,5 +38,84 @@
     "segments": [],
     "playbackInBrowser": "NOT_RUN",
     "physicalIPhone": "NOT_RUN"
+  },
+  {
+    "kind": "LIVE_DEPLOYED_TORRENT",
+    "at": "2026-10-24T11:53:48Z",
+    "request": {
+      "work": "fallout",
+      "season": 1,
+      "episode": 1,
+      "hash": "11e3b4beb33b39e6526f961bc983ffec55057464",
+      "provider": "comet",
+      "fileIdx": 0
+    },
+    "http": 422,
+    "elapsedSeconds": 56.21,
+    "result": {
+      "error": "MEDIA_PROCESS_FAILED",
+      "diagnostics": {
+        "infoHash": "11e3b4beb33b39e6526f961bc983ffec55057464",
+        "peers": 0,
+        "seeds": 0,
+        "receivedBytes": 0,
+        "downloadBytesPerSecond": 0,
+        "verifiedPieces": 0,
+        "metadataVerified": true,
+        "file": {
+          "index": 0,
+          "path": "Fallout (Season 1) WEB-DL 1080p/Fallout.S01E01.1080p.WEB-DL.RGzsRutracker.mkv",
+          "size": 7973516290
+        },
+        "dhtNodes": 0,
+        "listenPortReady": true,
+        "alertCounts": {
+          "log_alert": 20,
+          "listen_succeeded_alert": 4,
+          "torrent_added_alert": 1,
+          "torrent_log_alert": 263,
+          "add_torrent_alert": 1,
+          "state_changed_alert": 2,
+          "torrent_finished_alert": 1,
+          "torrent_checked_alert": 1,
+          "tracker_announce_alert": 12,
+          "dht_log_alert": 1,
+          "tracker_error_alert": 12,
+          "file_prio_alert": 2,
+          "cache_flushed_alert": 1,
+          "stats_alert": 55
+        },
+        "trackerErrors": [
+          {
+            "code": 180,
+            "message": "skipping tracker announce (unreachable)"
+          },
+          {
+            "code": 180,
+            "message": "skipping tracker announce (unreachable)"
+          },
+          {
+            "code": 180,
+            "message": "skipping tracker announce (unreachable)"
+          },
+          {
+            "code": 180,
+            "message": "skipping tracker announce (unreachable)"
+          },
+          {
+            "code": 16,
+            "message": "Device or resource busy"
+          },
+          {
+            "code": 16,
+            "message": "Device or resource busy"
+          }
+        ],
+        "transport": "BitTorrent TCP/UDP → libtorrent → FFmpeg → HLS"
+      }
+    },
+    "segments": [],
+    "playbackInBrowser": "NOT_RUN",
+    "physicalIPhone": "NOT_RUN"
   }
 ]

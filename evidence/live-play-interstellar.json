@@ -1,0 +1,144 @@
+[
+  {
+    "kind": "LIVE_DEPLOYED_TORRENT",
+    "at": "2026-10-24T11:51:32Z",
+    "request": {
+      "work": "interstellar",
+      "season": 1,
+      "episode": 1,
+      "hash": "d90729dfdaeb186565a5997abdc28b697eae4f7b",
+      "provider": "comet",
+      "fileIdx": null
+    },
+    "http": 422,
+    "elapsedSeconds": 46.2,
+    "result": {
+      "error": "METADATA_TIMEOUT",
+      "diagnostics": {
+        "infoHash": "d90729dfdaeb186565a5997abdc28b697eae4f7b",
+        "peers": 0,
+        "seeds": 0,
+        "receivedBytes": 0,
+        "downloadBytesPerSecond": 0,
+        "verifiedPieces": 0,
+        "metadataVerified": false,
+        "file": null,
+        "dhtNodes": 0,
+        "listenPortReady": true,
+        "alertCounts": {
+          "log_alert": 20,
+          "listen_succeeded_alert": 4,
+          "torrent_added_alert": 1,
+          "torrent_log_alert": 256,
+          "state_changed_alert": 1,
+          "tracker_announce_alert": 12,
+          "add_torrent_alert": 1,
+          "dht_log_alert": 1,
+          "tracker_error_alert": 12,
+          "stats_alert": 45
+        },
+        "trackerErrors": [
+          {
+            "code": 180,
+            "message": "skipping tracker announce (unreachable)"
+          },
+          {
+            "code": 180,
+            "message": "skipping tracker announce (unreachable)"
+          },
+          {
+            "code": 180,
+            "message": "skipping tracker announce (unreachable)"
+          },
+          {
+            "code": 180,
+            "message": "skipping tracker announce (unreachable)"
+          },
+          {
+            "code": 16,
+            "message": "Device or resource busy"
+          },
+          {
+            "code": 16,
+            "message": "Device or resource busy"
+          }
+        ],
+        "transport": "BitTorrent TCP/UDP → libtorrent → FFmpeg → HLS"
+      }
+    },
+    "segments": [],
+    "playbackInBrowser": "NOT_RUN",
+    "physicalIPhone": "NOT_RUN"
+  },
+  {
+    "kind": "LIVE_DEPLOYED_TORRENT",
+    "at": "2026-10-24T11:52:18Z",
+    "request": {
+      "work": "interstellar",
+      "season": 1,
+      "episode": 1,
+      "hash": "86bb6ae15a5cec1a3be3cf8b1eba1f15a48b9913",
+      "provider": "comet",
+      "fileIdx": 0
+    },
+    "http": 422,
+    "elapsedSeconds": 45.9,
+    "result": {
+      "error": "METADATA_TIMEOUT",
+      "diagnostics": {
+        "infoHash": "86bb6ae15a5cec1a3be3cf8b1eba1f15a48b9913",
+        "peers": 0,
+        "seeds": 0,
+        "receivedBytes": 0,
+        "downloadBytesPerSecond": 0,
+        "verifiedPieces": 0,
+        "metadataVerified": false,
+        "file": null,
+        "dhtNodes": 0,
+        "listenPortReady": true,
+        "alertCounts": {
+          "log_alert": 20,
+          "listen_succeeded_alert": 4,
+          "torrent_added_alert": 1,
+          "torrent_log_alert": 256,
+          "state_changed_alert": 1,
+          "tracker_announce_alert": 12,
+          "add_torrent_alert": 1,
+          "dht_log_alert": 1,
+          "tracker_error_alert": 12,
+          "stats_alert": 45
+        },
+        "trackerErrors": [
+          {
+            "code": 180,
+            "message": "skipping tracker announce (unreachable)"
+          },
+          {
+            "code": 180,
+            "message": "skipping tracker announce (unreachable)"
+          },
+          {
+            "code": 180,
+            "message": "skipping tracker announce (unreachable)"
+          },
+          {
+            "code": 180,
+            "message": "skipping tracker announce (unreachable)"
+          },
+          {
+            "code": 16,
+            "message": "Device or resource busy"
+          },
+          {
+            "code": 16,
+            "message": "Device or resource busy"
+          }
+        ],
+        "transport": "BitTorrent TCP/UDP → libtorrent → FFmpeg → HLS"
+      }
+    },
+    "segments": [],
+    "playbackInBrowser": "NOT_RUN",
+    "physicalIPhone": "NOT_RUN"
+  }
+]

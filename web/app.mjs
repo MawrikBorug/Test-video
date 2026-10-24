@@ -87,7 +87,7 @@ async function nextCandidate(generation){
   step('audio','done');$('play-options').hidden=false;state.trying=false;renderCandidates();
   state.statusTimer=setInterval(async()=>{if(generation!==state.generation||!state.ticket)return;try{const s=await request('/api/status',{method:'POST',body:{ticket:state.ticket},timeout:8000});if(generation!==state.generation)return;$('stats').textContent=`${s.peers??'?'} пиров · ${s.receivedBytes===null?'байты неизвестны':(s.receivedBytes/1048576).toFixed(1)+' МиБ получено'} · TCP/UDP`; }catch{}},6000);
   await playAt(0,generation);
- }catch(e){if(generation!==state.generation)return;await failCandidate(safeError(e),generation);}
+ }catch(e){if(generation!==state.generation)return;if(e.diagnostics)log('TORRENT_FAILURE_DIAGNOSTICS',e.diagnostics);await failCandidate(safeError(e),generation);}
 }
 async function failCandidate(error,generation){
  if(generation!==state.generation||state.failing)return;state.failing=true;

@@ -1,0 +1,93 @@
+[
+  {
+    "kind": "LIVE_DEPLOYED_TORRENT",
+    "at": "2026-10-24T11:49:59Z",
+    "request": {
+      "work": "frieren",
+      "season": 1,
+      "episode": 1,
+      "hash": "a3cc9c9d16af2f3c8cfadd51832dee95bf67326b",
+      "provider": "torrentsdb",
+      "fileIdx": 0
+    },
+    "http": 422,
+    "elapsedSeconds": 45.95,
+    "result": {
+      "error": "METADATA_TIMEOUT"
+    },
+    "segments": [],
+    "playbackInBrowser": "NOT_RUN",
+    "physicalIPhone": "NOT_RUN"
+  },
+  {
+    "kind": "LIVE_DEPLOYED_TORRENT",
+    "at": "2026-10-24T11:50:46Z",
+    "request": {
+      "work": "frieren",
+      "season": 1,
+      "episode": 1,
+      "hash": "dbb5e19757474b51c193eee37964153425761d66",
+      "provider": "comet",
+      "fileIdx": 0
+    },
+    "http": 422,
+    "elapsedSeconds": 46.04,
+    "result": {
+      "error": "METADATA_TIMEOUT",
+      "diagnostics": {
+        "infoHash": "dbb5e19757474b51c193eee37964153425761d66",
+        "peers": 0,
+        "seeds": 0,
+        "receivedBytes": 0,
+        "downloadBytesPerSecond": 0,
+        "verifiedPieces": 0,
+        "metadataVerified": false,
+        "file": null,
+        "dhtNodes": 0,
+        "listenPortReady": true,
+        "alertCounts": {
+          "log_alert": 20,
+          "listen_succeeded_alert": 4,
+          "torrent_added_alert": 1,
+          "torrent_log_alert": 256,
+          "state_changed_alert": 1,
+          "tracker_announce_alert": 12,
+          "add_torrent_alert": 1,
+          "dht_log_alert": 1,
+          "stats_alert": 45,
+          "tracker_error_alert": 12
+        },
+        "trackerErrors": [
+          {
+            "code": 180,
+            "message": "skipping tracker announce (unreachable)"
+          },
+          {
+            "code": 180,
+            "message": "skipping tracker announce (unreachable)"
+          },
+          {
+            "code": 180,
+            "message": "skipping tracker announce (unreachable)"
+          },
+          {
+            "code": 180,
+            "message": "skipping tracker announce (unreachable)"
+          },
+          {
+            "code": 16,
+            "message": "Device or resource busy"
+          },
+          {
+            "code": 16,
+            "message": "Device or resource busy"
+          }
+        ],
+        "transport": "BitTorrent TCP/UDP → libtorrent → FFmpeg → HLS"
+      }
+    },
+    "segments": [],
+    "playbackInBrowser": "NOT_RUN",
+    "physicalIPhone": "NOT_RUN"
+  }
+]

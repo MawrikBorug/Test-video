@@ -28,7 +28,7 @@ export async function jsonRequest(url,{signal,method='GET',body,timeout=25000}={
   if(response.status===429)throw new Error('RATE_LIMIT · Retry-After: '+(response.headers.get('Retry-After')||'unknown'));
   const text=await response.text();if(text.length>16*1024*1024)throw new Error('RESPONSE_TOO_LARGE');
   let data;try{data=JSON.parse(text)}catch{throw new Error('NON_JSON_HTTP_'+response.status)}
-  if(!response.ok||data.error)throw new Error(data.error||'HTTP_'+response.status);
+  if(!response.ok||data.error){const error=new Error(data.error||'HTTP_'+response.status);error.diagnostics=data.diagnostics;throw error;}
   return data;
  }catch(e){if(controller.signal.aborted)throw new Error(signal?.aborted?'CANCELLED':'TIMEOUT');throw e;}
  finally{clearTimeout(timer);signal?.removeEventListener('abort',abort)}

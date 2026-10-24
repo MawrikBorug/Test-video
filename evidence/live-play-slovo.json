@@ -38,5 +38,155 @@
     "segments": [],
     "playbackInBrowser": "NOT_RUN",
     "physicalIPhone": "NOT_RUN"
+  },
+  {
+    "kind": "LIVE_DEPLOYED_TORRENT",
+    "at": "2026-10-24T11:52:05Z",
+    "request": {
+      "work": "slovo",
+      "season": 1,
+      "episode": 1,
+      "hash": "233587375c21491552e04c10a3fd3b6fa05a47af",
+      "provider": "torrentsdb",
+      "fileIdx": 0
+    },
+    "http": 422,
+    "elapsedSeconds": 56.17,
+    "result": {
+      "error": "MEDIA_PROCESS_FAILED",
+      "diagnostics": {
+        "infoHash": "233587375c21491552e04c10a3fd3b6fa05a47af",
+        "peers": 0,
+        "seeds": 0,
+        "receivedBytes": 0,
+        "downloadBytesPerSecond": 0,
+        "verifiedPieces": 0,
+        "metadataVerified": true,
+        "file": {
+          "index": 0,
+          "path": "Slovo.Pacana.Krov'.Na.Asfal'te.S01.2023.WEB-DLRip-AVC.KPK.GF/Slovo.Pacana.Krov'.Na.Asfal'te.s01e01.2023.WEB-DLRip-AVC.KPK.GF.mp4",
+          "size": 242466331
+        },
+        "dhtNodes": 0,
+        "listenPortReady": true,
+        "alertCounts": {
+          "log_alert": 21,
+          "listen_succeeded_alert": 4,
+          "torrent_added_alert": 1,
+          "torrent_log_alert": 265,
+          "add_torrent_alert": 1,
+          "dht_log_alert": 1,
+          "state_changed_alert": 2,
+          "torrent_finished_alert": 1,
+          "torrent_checked_alert": 1,
+          "tracker_announce_alert": 12,
+          "tracker_error_alert": 12,
+          "file_prio_alert": 2,
+          "cache_flushed_alert": 1,
+          "stats_alert": 55
+        },
+        "trackerErrors": [
+          {
+            "code": 180,
+            "message": "skipping tracker announce (unreachable)"
+          },
+          {
+            "code": 180,
+            "message": "skipping tracker announce (unreachable)"
+          },
+          {
+            "code": 180,
+            "message": "skipping tracker announce (unreachable)"
+          },
+          {
+            "code": 180,
+            "message": "skipping tracker announce (unreachable)"
+          },
+          {
+            "code": 16,
+            "message": "Device or resource busy"
+          },
+          {
+            "code": 16,
+            "message": "Device or resource busy"
+          }
+        ],
+        "transport": "BitTorrent TCP/UDP → libtorrent → FFmpeg → HLS"
+      }
+    },
+    "segments": [],
+    "playbackInBrowser": "NOT_RUN",
+    "physicalIPhone": "NOT_RUN"
+  },
+  {
+    "kind": "LIVE_DEPLOYED_TORRENT",
+    "at": "2026-10-24T11:52:51Z",
+    "request": {
+      "work": "slovo",
+      "season": 1,
+      "episode": 1,
+      "hash": "8dd27aeff2c936bedd2c73e655ec55dc52f3aa17",
+      "provider": "comet",
+      "fileIdx": 7
+    },
+    "http": 422,
+    "elapsedSeconds": 46.02,
+    "result": {
+      "error": "METADATA_TIMEOUT",
+      "diagnostics": {
+        "infoHash": "8dd27aeff2c936bedd2c73e655ec55dc52f3aa17",
+        "peers": 0,
+        "seeds": 0,
+        "receivedBytes": 0,
+        "downloadBytesPerSecond": 0,
+        "verifiedPieces": 0,
+        "metadataVerified": false,
+        "file": null,
+        "dhtNodes": 0,
+        "listenPortReady": true,
+        "alertCounts": {
+          "log_alert": 20,
+          "listen_succeeded_alert": 4,
+          "torrent_added_alert": 1,
+          "torrent_log_alert": 256,
+          "state_changed_alert": 1,
+          "tracker_announce_alert": 12,
+          "add_torrent_alert": 1,
+          "dht_log_alert": 1,
+          "tracker_error_alert": 12,
+          "stats_alert": 45
+        },
+        "trackerErrors": [
+          {
+            "code": 180,
+            "message": "skipping tracker announce (unreachable)"
+          },
+          {
+            "code": 180,
+            "message": "skipping tracker announce (unreachable)"
+          },
+          {
+            "code": 180,
+            "message": "skipping tracker announce (unreachable)"
+          },
+          {
+            "code": 180,
+            "message": "skipping tracker announce (unreachable)"
+          },
+          {
+            "code": 16,
+            "message": "Device or resource busy"
+          },
+          {
+            "code": 16,
+            "message": "Device or resource busy"
+          }
+        ],
+        "transport": "BitTorrent TCP/UDP → libtorrent → FFmpeg → HLS"
+      }
+    },
+    "segments": [],
+    "playbackInBrowser": "NOT_RUN",
+    "physicalIPhone": "NOT_RUN"
   }
 ]

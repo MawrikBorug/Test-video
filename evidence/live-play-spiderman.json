@@ -1,0 +1,44 @@
+[
+  {
+    "kind": "LIVE_DEPLOYED_TORRENT",
+    "at": "2026-10-24T11:51:12Z",
+    "request": {
+      "work": "spiderman",
+      "season": 1,
+      "episode": 1,
+      "hash": "50d3b22274d61b8cd13f29c65ec953c9bf225a9b",
+      "provider": "comet",
+      "fileIdx": null
+    },
+    "http": 422,
+    "elapsedSeconds": 0.66,
+    "result": {
+      "error": "EXECUTOR_CAPACITY",
+      "diagnostics": null
+    },
+    "segments": [],
+    "playbackInBrowser": "NOT_RUN",
+    "physicalIPhone": "NOT_RUN"
+  },
+  {
+    "kind": "LIVE_DEPLOYED_TORRENT",
+    "at": "2026-10-24T11:51:13Z",
+    "request": {
+      "work": "spiderman",
+      "season": 1,
+      "episode": 1,
+      "hash": "5af5aa279ef99e6d1db9f99902569b7318405989",
+      "provider": "comet",
+      "fileIdx": null
+    },
+    "http": 422,
+    "elapsedSeconds": 0.63,
+    "result": {
+      "error": "EXECUTOR_CAPACITY",
+      "diagnostics": null
+    },
+    "segments": [],
+    "playbackInBrowser": "NOT_RUN",
+    "physicalIPhone": "NOT_RUN"
+  }
+]

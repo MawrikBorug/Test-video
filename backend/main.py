@@ -8,6 +8,7 @@ from .engine import Torrent, known_metadata
 from .selection import Refusal
 from .raw import start_raw
 from .media import inspect, manifest, segment
+from .metadata import resolve as resolve_metadata
 
 ROOT=pathlib.Path(__file__).resolve().parents[1]
 CATALOG=json.loads((ROOT/'web/catalog.json').read_text())
@@ -118,7 +119,10 @@ async def load(data,probe=True):
             for tr in ['udp://tracker.opentrackr.org:1337/announce','udp://open.stealth.si:80/announce','https://tracker.tamersunion.org:443/announce']:
                 from urllib.parse import quote
                 magnet+='&tr='+quote(tr,safe='')
-            t=Torrent(magnet,STORE,metadata=known_metadata(data['hash']))
+            metadata,metadata_evidence=await resolve_metadata(data['hash'])
+            t=Torrent(magnet,STORE,metadata=metadata)
+            t.metadata_evidence=metadata_evidence
+            event('TORRENT_METADATA_ROUTE',infoHash=t.hash,**metadata_evidence)
             engines[key]=t
     try:
         if not t.file:

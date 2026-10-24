@@ -1,0 +1,44 @@
+[
+  {
+    "kind": "LIVE_DEPLOYED_TORRENT",
+    "at": "2026-10-24T11:51:14Z",
+    "request": {
+      "work": "hailmary",
+      "season": 1,
+      "episode": 1,
+      "hash": "9252553265c4868c59989475581cc59ab2fb4da1",
+      "provider": "comet",
+      "fileIdx": null
+    },
+    "http": 422,
+    "elapsedSeconds": 0.64,
+    "result": {
+      "error": "EXECUTOR_CAPACITY",
+      "diagnostics": null
+    },
+    "segments": [],
+    "playbackInBrowser": "NOT_RUN",
+    "physicalIPhone": "NOT_RUN"
+  },
+  {
+    "kind": "LIVE_DEPLOYED_TORRENT",
+    "at": "2026-10-24T11:51:15Z",
+    "request": {
+      "work": "hailmary",
+      "season": 1,
+      "episode": 1,
+      "hash": "738632d0a9c8ff131a726ab30db2fe0bd5f92f23",
+      "provider": "comet",
+      "fileIdx": null
+    },
+    "http": 422,
+    "elapsedSeconds": 0.93,
+    "result": {
+      "error": "EXECUTOR_CAPACITY",
+      "diagnostics": null
+    },
+    "segments": [],
+    "playbackInBrowser": "NOT_RUN",
+    "physicalIPhone": "NOT_RUN"
+  }
+]

@@ -1,0 +1,44 @@
+[
+  {
+    "kind": "LIVE_DEPLOYED_TORRENT",
+    "at": "2026-10-24T11:51:15Z",
+    "request": {
+      "work": "shrek",
+      "season": 1,
+      "episode": 1,
+      "hash": "d41689639e37cb6604229e1e825cb24060f5ed18",
+      "provider": "comet",
+      "fileIdx": null
+    },
+    "http": 422,
+    "elapsedSeconds": 0.75,
+    "result": {
+      "error": "EXECUTOR_CAPACITY",
+      "diagnostics": null
+    },
+    "segments": [],
+    "playbackInBrowser": "NOT_RUN",
+    "physicalIPhone": "NOT_RUN"
+  },
+  {
+    "kind": "LIVE_DEPLOYED_TORRENT",
+    "at": "2026-10-24T11:51:16Z",
+    "request": {
+      "work": "shrek",
+      "season": 1,
+      "episode": 1,
+      "hash": "f037ea2418515a0b6236b728b61a9daac4bdaca2",
+      "provider": "comet",
+      "fileIdx": null
+    },
+    "http": 422,
+    "elapsedSeconds": 0.35,
+    "result": {
+      "error": "EXECUTOR_CAPACITY",
+      "diagnostics": null
+    },
+    "segments": [],
+    "playbackInBrowser": "NOT_RUN",
+    "physicalIPhone": "NOT_RUN"
+  }
+]

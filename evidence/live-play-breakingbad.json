@@ -1,0 +1,44 @@
+[
+  {
+    "kind": "LIVE_DEPLOYED_TORRENT",
+    "at": "2026-10-24T11:51:11Z",
+    "request": {
+      "work": "breakingbad",
+      "season": 1,
+      "episode": 1,
+      "hash": "97a13de6bb8b741a099a446e755a8a09cfd3a493",
+      "provider": "comet",
+      "fileIdx": 0
+    },
+    "http": 422,
+    "elapsedSeconds": 0.4,
+    "result": {
+      "error": "EXECUTOR_CAPACITY",
+      "diagnostics": null
+    },
+    "segments": [],
+    "playbackInBrowser": "NOT_RUN",
+    "physicalIPhone": "NOT_RUN"
+  },
+  {
+    "kind": "LIVE_DEPLOYED_TORRENT",
+    "at": "2026-10-24T11:51:12Z",
+    "request": {
+      "work": "breakingbad",
+      "season": 1,
+      "episode": 1,
+      "hash": "960d57ea0acb77b1a50daa7d32157a0eb5b7b0c4",
+      "provider": "comet",
+      "fileIdx": 0
+    },
+    "http": 422,
+    "elapsedSeconds": 0.61,
+    "result": {
+      "error": "EXECUTOR_CAPACITY",
+      "diagnostics": null
+    },
+    "segments": [],
+    "playbackInBrowser": "NOT_RUN",
+    "physicalIPhone": "NOT_RUN"
+  }
+]

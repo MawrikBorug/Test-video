@@ -125,7 +125,7 @@ class Torrent:
         return {'infoHash':self.hash,'peers':s.num_peers,'seeds':s.num_seeds,
                 'receivedBytes':s.total_payload_download,'downloadBytesPerSecond':s.download_rate,
                 'verifiedPieces':s.num_pieces,'metadataVerified':self.handle.has_metadata(),
-                'file':self.file,'dhtNodes':self.session.status().dht_nodes,'listenPortReady':self.session.listen_port()>0,
+                'file':self.file,'metadataEvidence':getattr(self,'metadata_evidence',None),'dhtNodes':self.session.status().dht_nodes,'listenPortReady':self.session.listen_port()>0,
                 'alertCounts':self.alert_counts.copy(),'trackerErrors':self.tracker_errors[:],
                 'transport':'BitTorrent TCP/UDP → libtorrent → FFmpeg → HLS'}
 
