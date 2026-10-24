@@ -1,7 +1,7 @@
 import {test,expect} from '@playwright/test';import fs from 'node:fs';
 test('CONTROL: real TCP torrent, Russian stream, playback, far seek, switch and ended',async({page})=>{
  const errors=[];page.on('pageerror',e=>errors.push(e.message));
- await page.goto('/');await expect(page.locator('#connection')).toHaveText('Исполнитель доступен');
+ await page.goto('/');await expect(page.locator('#connection')).toHaveText('Контрольный исполнитель');
  await page.locator('#episode').selectOption('2');await page.locator('#search').click();
  await expect(page.locator('#count')).toHaveText('2',{timeout:35000});await page.locator('#auto').click();
  await expect.poll(()=>page.locator('video').evaluate(v=>({time:v.currentTime,ready:v.readyState})),{timeout:160000}).toMatchObject({ready:4});

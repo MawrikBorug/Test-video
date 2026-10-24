@@ -7,6 +7,8 @@ const state={work:catalog[0],season:1,episode:1,episodes:[],candidates:[],genera
 const paintLog=()=>{$('log').replaceChildren(...state.log.slice(-70).reverse().map(row=>{const el=document.createElement('div');el.className='logrow'+(/FAIL|ERROR|TIMEOUT|BLOCK|UNAVAILABLE|MISMATCH/.test(row.code)?' bad':'');const time=document.createElement('time');time.textContent=row.at.slice(11,19);const text=document.createElement('span');text.textContent=row.code+' '+JSON.stringify(row.details);el.append(time,text);return el}));};
 function log(code,details={}){state.log.push({at:new Date().toISOString(),code,mode:state.dataMode,details});if(state.log.length>350)state.log.shift();paintLog();try{localStorage.setItem('test-video.log.v1',JSON.stringify(state.log))}catch{}}
 function status(text){$('status').textContent=text;}
+const explanations={METADATA_TIMEOUT:'Не получены metadata у пиров и HTTPS-кэшей.',PIECE_TIMEOUT:'Файл определён, но требуемые торрент-части не получены.',RUSSIAN_AUDIO_NOT_VERIFIED:'В файле не подтверждена русская дорожка.',EXECUTOR_CAPACITY:'У исполнителя заняты обе разрешённые сессии.',EPISODE_UNRESOLVED:'Не удалось однозначно сопоставить сезон и серию с файлом.',MEDIA_PROCESS_FAILED:'FFmpeg не смог прочитать или подготовить видео.',TORRENT_HASH_MISMATCH:'Metadata не соответствуют выбранному infohash.'};
+function resetSteps(){for(const s of ['search','file','audio','video'])step(s,'');}
 const safeError=e=>String(e.message||e).replace(/https?:\/\/\S+/g,'[URL]').replace(/[A-Za-z0-9_\-]{64,}/g,'[скрыто]').slice(0,220);
 function step(id,value){$('step-'+id).className=value;}
 let executorBase='';try{executorBase=localStorage.getItem('test-video.executor.v1')||''}catch{}
@@ -27,13 +29,13 @@ function controls(){
 async function stop({invalidate=true}={}){
  if(invalidate){state.generation++;state.controller?.abort();}
  state.running=false;state.trying=false;clearInterval(state.statusTimer);clearTimeout(state.stallTimer);state.hls?.destroy();state.hls=null;
- video.pause();video.removeAttribute('src');video.load();video.style.display='none';$('empty-player').hidden=false;$('play-options').hidden=true;$('stop').disabled=true;$('resume').hidden=true;
+ video.pause();video.removeAttribute('src');video.load();video.style.display='none';$('empty-player').hidden=false;$('play-options').hidden=true;$('stop').disabled=true;$('resume').hidden=true;$('stats').textContent='';
  if(state.ticket){const ticket=state.ticket;state.ticket=null;request('/api/close',{method:'POST',body:{ticket},timeout:5000}).catch(()=>{});}
 }
 async function selectWork(work){
  await stop();state.work=work;state.season=1;state.episode=1;state.episodes=[];state.candidates=[];state.active=null;state.queue=[];
  for(const el of $('works').children){const selected=el.dataset.key===work.key;el.classList.toggle('active',selected);el.setAttribute('aria-pressed',String(selected));}
- $('work-title').textContent=work.ru;$('work-meta').textContent=`${work.type==='series'?'СЕРИАЛ':'ФИЛЬМ'} / ${work.year} / ${work.imdb}`;$('work-note').textContent=work.note||work.title;
+ $('work-title').textContent=(state.dataMode==='live'?'':'КОНТРОЛЬ · ')+work.ru;$('work-meta').textContent=`${work.type==='series'?'СЕРИАЛ':'ФИЛЬМ'} / ${work.year} / ${work.imdb}`;$('work-note').textContent=work.note||work.title;
  for(const s of ['search','file','audio','video'])step(s,'');controls();renderCandidates();$('auto').disabled=true;status('Выберите сезон и серию, затем найдите источники.');
  const generation=state.generation;
  try{const data=state.ready?await request('/api/episodes/'+work.key):await jsonRequest(`https://v3-cinemeta.strem.io/meta/${work.type}/${work.imdb}.json`).then(j=>({episodes:(j.meta?.videos||[]).filter(e=>e.season>0)}));if(generation!==state.generation)return;state.episodes=data.episodes.filter(e=>Number.isInteger(e.episode)&&Number.isInteger(e.season));controls();log('EPISODE_CATALOG',{work:work.key,episodes:state.episodes.length});}
@@ -41,8 +43,8 @@ async function selectWork(work){
 }
 const colors=[['#5f493e','#182824'],['#496b62','#1a2625'],['#4b5057','#151b23'],['#695c44','#171c25'],['#625b3b','#262e27'],['#3f6255','#172721'],['#6a3d42','#1f2830'],['#4b5f68','#191c2b'],['#5e7043','#222e1d'],['#555c6b','#242431']];
 catalog.forEach((w,i)=>{const b=document.createElement('button');b.className='work';b.dataset.key=w.key;b.setAttribute('aria-label',`${w.ru}, ${w.year}`);b.setAttribute('aria-pressed','false');const art=document.createElement('div');art.className='art';art.style.setProperty('--a',colors[i][0]);art.style.setProperty('--b',colors[i][1]);const num=document.createElement('small');num.textContent=String(i+1).padStart(2,'0');const initial=document.createElement('span');initial.textContent=w.ru.split(/\s/).map(s=>s[0]).slice(0,2).join('');art.append(initial,num);const txt=document.createElement('div');txt.className='worktext';const title=document.createElement('strong');title.textContent=w.ru;const meta=document.createElement('small');meta.textContent=`${w.year} · ${w.type==='series'?'Сериал':'Фильм'}`;txt.append(title,meta);b.append(art,txt);b.onclick=()=>selectWork(w);$('works').append(b);});
-async function changeEpisode(){await stop();state.season=Number($('season').value)||1;state.episode=Number($('episode').value)||1;controls();state.candidates=[];state.queue=[];renderCandidates();$('auto').disabled=true;status('Серия изменена. Выполните новый поиск.');}
-$('season').onchange=async()=>{const season=Number($('season').value)||1;await stop();state.season=season;state.episode=1;controls();state.candidates=[];state.queue=[];renderCandidates();$('auto').disabled=true;status('Сезон изменён. Выполните новый поиск.');};$('episode').onchange=changeEpisode;
+async function changeEpisode(){await stop();state.season=Number($('season').value)||1;state.episode=Number($('episode').value)||1;controls();resetSteps();state.candidates=[];state.queue=[];renderCandidates();$('auto').disabled=true;status('Серия изменена. Выполните новый поиск.');}
+$('season').onchange=async()=>{const season=Number($('season').value)||1;await stop();state.season=season;state.episode=1;controls();resetSteps();state.candidates=[];state.queue=[];renderCandidates();$('auto').disabled=true;status('Сезон изменён. Выполните новый поиск.');};$('episode').onchange=changeEpisode;
 function visibleCandidates(){return state.candidates.filter(c=>($('voice-filter').value==='all'||c.ru)&&($('source-quality').value==='all'||c.resolution===$('source-quality').value));}
 function renderCandidates(){
  $('count').textContent=String(state.candidates.length);const items=visibleCandidates();$('source-list').replaceChildren(...items.slice(0,state.limit).map(c=>{const el=document.createElement('div');el.className='candidate'+(c.state==='failed'?' failed':'');const body=document.createElement('div');const title=document.createElement('p');title.textContent=c.title.split('\n').slice(0,3).join(' · ');const detail=document.createElement('small');detail.textContent=`${c.providers.join(' + ')} · ${c.resolution} · fileIdx ${c.fileIdx??'?'} · ${c.state==='failed'?c.error:'metadata ещё не проверены'}`;body.append(title,detail);const b=document.createElement('button');b.textContent=c.state==='failed'?'Повторить':'Проверить';b.disabled=!state.ready||state.trying;const gen=state.generation;b.onclick=()=>{if(gen===state.generation)startQueue([c,...items.filter(x=>x!==c)])};el.append(body,b);return el}));
@@ -51,7 +53,7 @@ function renderCandidates(){
 }
 $('more').onclick=()=>{state.limit+=20;renderCandidates()};for(const id of ['voice-filter','source-quality'])$(id).onchange=()=>{state.limit=20;renderCandidates()};
 async function search(){
- await stop();const generation=state.generation;const controller=new AbortController();state.controller=controller;state.candidates=[];state.limit=20;state.queue=[];$('auto').disabled=true;renderCandidates();step('search','busy');status('Запрашиваем Comet и TorrentsDB…');
+ await stop();const generation=state.generation;const controller=new AbortController();state.controller=controller;state.candidates=[];state.limit=20;state.queue=[];resetSteps();$('auto').disabled=true;renderCandidates();step('search','busy');status('Запрашиваем Comet и TorrentsDB…');
  for(const p of providers){
   try{
    const url=state.ready?api(`/api/search/${p.id}/${state.work.key}?season=${state.season}&episode=${state.episode}`):`${p.base}/stream/${state.work.type}/${videoId(state.work,state.season,state.episode)}.json`;
@@ -73,7 +75,7 @@ async function startQueue(items){
 }
 async function nextCandidate(generation){
  if(generation!==state.generation||!state.running)return;
- const c=state.queue.shift();if(!c){state.trying=false;state.running=false;renderCandidates();status('Очередь проверена. Видеодоставка не подтверждена: смотрите причины в журнале.');$('auto').disabled=false;log('QUEUE_EXHAUSTED');return;}
+ const c=state.queue.shift();if(!c){state.trying=false;state.running=false;renderCandidates();status('Очередь проверена. Видеодоставка не подтверждена. '+(state.lastFailure||'Подробности в журнале.'));$('auto').disabled=false;log('QUEUE_EXHAUSTED');return;}
  state.active=c;state.played=false;step('file','busy');status(`Проверяем файл и доступность пиров: ${c.providers.join(' + ')} · ${c.resolution}. До 150 секунд на metadata, байты и дорожки.`);
  log('TORRENT_OPEN',{...selection(),hash:c.hash,fileIdxClaimed:c.fileIdx,provider:c.provider});
  try{
@@ -92,7 +94,7 @@ async function nextCandidate(generation){
 }
 async function failCandidate(error,generation){
  if(generation!==state.generation||state.failing)return;state.failing=true;
- const c=state.active;c.state='failed';c.error=error;log('SOURCE_FAILED',{hash:c.hash,error});
+ const c=state.active;c.state='failed';c.error=error;state.lastFailure=explanations[error]||error;log('SOURCE_FAILED',{hash:c.hash,error,explanation:state.lastFailure});$('play-options').hidden=true;
  clearInterval(state.statusTimer);clearTimeout(state.stallTimer);state.hls?.destroy();state.hls=null;video.pause();video.removeAttribute('src');video.load();
  if(state.ticket){const ticket=state.ticket;state.ticket=null;await request('/api/close',{method:'POST',body:{ticket},timeout:6000}).catch(()=>{});}
  state.failing=false;if(generation!==state.generation)return;state.trying=true;renderCandidates();status('Источник отказал. Проверяем следующую раздачу…');await nextCandidate(generation);
@@ -127,7 +129,7 @@ $('executor-url').value=executorBase;
 $('executor-save').onclick=async()=>{const value=$('executor-url').value.trim().replace(/\/$/,'');try{if(value){const u=new URL(value);if(u.protocol!=='https:'||u.username||u.password||u.search||u.hash||u.pathname!=='/')throw new Error('Нужен HTTPS-адрес корня сервера без пароля и параметров.')}await stop();executorBase=value;localStorage.setItem('test-video.executor.v1',value);$('health').replaceChildren();await init();}catch(e){status(safeError(e))}};
 async function init(){
  $('build').textContent=__BUILD_SHA__.slice(0,8);try{state.log=JSON.parse(localStorage.getItem('test-video.log.v1')||'[]').slice(-200)}catch{}
- try{const h=await request('/api/health',{timeout:12000});state.dataMode=h.control?'CONTROL_SYNTHETIC_SEARCH_REAL_TCP_MEDIA':'live';state.ready=!!h.ffmpeg&&!!h.ffprobe;$('connection').textContent=state.ready?'Исполнитель доступен':'FFmpeg недоступен';$('connection').className='badge '+(state.ready?'ok':'warn');$('overall').textContent=state.ready?'Торрент-исполнитель запущен':'Исполнитель не готов';$('environment').textContent=state.ready?'Библиотеки готовы. Получение байтов и просмотр проверяются отдельно для каждой раздачи.':'Нужна работающая серверная среда с libtorrent и FFmpeg.';for(const text of [h.transport,h.transcoder,'Кэш: '+(h.cacheBytes/1048576).toFixed(0)+' МиБ',h.serverless?'Vercel Function · cold start возможен':'Серверный процесс']){const span=document.createElement('span');span.textContent=text;$('health').append(span)}log('EXECUTOR_RUNTIME',h);}
+ try{const h=await request('/api/health',{timeout:12000});state.dataMode=h.control?'CONTROL_SYNTHETIC_SEARCH_REAL_TCP_MEDIA':'live';state.ready=!!h.ffmpeg&&!!h.ffprobe;$('connection').textContent=h.control?'Контрольный исполнитель':state.ready?'Исполнитель доступен':'FFmpeg недоступен';$('connection').className='badge '+(state.ready?'ok':'warn');$('overall').textContent=state.ready?'Торрент-исполнитель запущен':'Исполнитель не готов';$('environment').textContent=state.ready?'Библиотеки готовы. Получение байтов и просмотр проверяются отдельно для каждой раздачи.':'Нужна работающая серверная среда с libtorrent и FFmpeg.';for(const text of [h.control?'CONTROL · своё видео / синтетическая выдача':'LIVE · настоящие поставщики',h.transport,h.transcoder,'Кэш: '+(h.cacheBytes/1048576).toFixed(0)+' МиБ',h.serverless?'Vercel Function · cold start возможен':'Серверный процесс']){const span=document.createElement('span');span.textContent=text;$('health').append(span)}log('EXECUTOR_RUNTIME',h);}
  catch(e){$('connection').textContent='Исполнитель недоступен';$('connection').className='badge warn';$('overall').textContent='Видео пока заблокировано';$('environment').textContent='Поиск можно проверить. Сервер получения торрентов не ответил: причина в диагностике.';log('EXECUTOR_UNAVAILABLE',{error:safeError(e)});}
  try{const v=await jsonRequest('./verification.json',{timeout:5000});$('last-verification').textContent=`Последняя приёмка: ${v.commercialTitlesWithVerifiedPlayback}/${v.requiredTitles} произведений с подтверждённым воспроизведением. Поиск: ${v.liveSearchResponsesWithCandidates}/${v.liveSearchRequests}. Дата: ${v.at.slice(0,16).replace('T',' ')} UTC. Контрольный ролик учтён отдельно.`;if(!v.selectionPlaybackAccepted&&state.ready){$('overall').textContent='Просмотр подборки не подтверждён';$('environment').textContent='Библиотеки сервера запущены. В последнем медиапрогоне связь с торрент-пирами не установлена. Точные причины — ниже.'}}catch{}
  await selectWork(state.work);
