@@ -1,9 +1,10 @@
 import asyncio, json, math, os, pathlib, shutil
 from .selection import Refusal, audio_label
+from .binaries import executable
 
 ROOT=pathlib.Path(__file__).resolve().parents[1]
 FFMPEG=os.environ.get('FFMPEG_BIN') or shutil.which('ffmpeg') or str(ROOT/'node_modules/ffmpeg-static/ffmpeg')
-FFPROBE=os.environ.get('FFPROBE_BIN') or shutil.which('ffprobe') or str(ROOT/'node_modules/ffprobe-static/bin/linux/x64/ffprobe')
+FFPROBE=os.environ.get('FFPROBE_BIN') or shutil.which('ffprobe') or executable('ffprobe') or str(ROOT/'node_modules/ffprobe-static/bin/linux/x64/ffprobe')
 SEGMENT=6
 
 async def command(args, timeout=100):

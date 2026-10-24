@@ -2,6 +2,7 @@
 import asyncio,json,os,pathlib,subprocess
 import httpx
 from .selection import Refusal
+from .binaries import executable
 
 RUNTIME=pathlib.Path(__file__).resolve().parent/'runtime'
 _lock=asyncio.Lock()
@@ -19,8 +20,8 @@ async def ensure(base,state):
     if await heartbeat(base):return
     async with _lock:
         if await heartbeat(base):return
-        node=RUNTIME/'node';bundle=RUNTIME/'stremio-server.cjs'
-        if not node.is_file() or not bundle.is_file():raise Refusal('STREMIO_RUNTIME_NOT_BUNDLED')
+        node=executable('node');bundle=RUNTIME/'stremio-server.cjs'
+        if not node or not bundle.is_file():raise Refusal('STREMIO_RUNTIME_NOT_BUNDLED')
         if base!='http://127.0.0.1:11470':raise Refusal('EXTERNAL_STREMIO_UNAVAILABLE')
         from .media import FFMPEG,FFPROBE
         state.mkdir(parents=True,exist_ok=True)
@@ -43,7 +44,7 @@ async def ensure(base,state):
         raise Refusal('STREMIO_START_TIMEOUT')
 
 def diagnostics():
-    data={'bundled':(RUNTIME/'node').is_file() and (RUNTIME/'stremio-server.cjs').is_file(),
+    data={'bundled':(RUNTIME/'node.gz').is_file() and (RUNTIME/'stremio-server.cjs').is_file(),
         'ownedProcessRunning':bool(_process and _process.poll() is None),
         'exitCode':_process.poll() if _process else None}
     try:data['bundle']=json.loads((RUNTIME/'runtime-info.json').read_text())
