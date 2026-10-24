@@ -1,1 +1,4 @@
--r backend/requirements.txt
+fastapi==0.141.1
+uvicorn==0.41.0
+libtorrent==2.0.15
+httpx==0.28.1

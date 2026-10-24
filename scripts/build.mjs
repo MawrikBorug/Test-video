@@ -5,6 +5,7 @@ import {createHash} from 'node:crypto';
 let sha=process.env.VERCEL_GIT_COMMIT_SHA||process.env.GITHUB_SHA;
 if(!sha&&fs.existsSync('source-info.json'))sha=JSON.parse(fs.readFileSync('source-info.json')).sha;
 if(!sha){try{sha=execFileSync('git',['rev-parse','HEAD']).toString().trim()}catch{sha='unknown'}}
+if(!fs.existsSync('node_modules/ffmpeg-static/ffmpeg'))execFileSync(process.execPath,['node_modules/ffmpeg-static/install.js'],{stdio:'inherit',cwd:process.cwd()});
 fs.mkdirSync('backend/metadata',{recursive:true});
 for(const item of JSON.parse(fs.readFileSync('backend/metadata-index.json'))){
  const path='backend/metadata/'+item.name;

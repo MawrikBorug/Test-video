@@ -93,7 +93,7 @@ class Torrent:
             data=self._cache.get(index)
         if data is None:raise Refusal('PIECE_READ_FAILED')
         # libtorrent hash-checks every received piece before have_piece/read_piece.
-        if hashlib.sha1(data).hexdigest()!=str(self.ti.hash_for_piece(index)):
+        if hashlib.sha1(data).digest()!=self.ti.hash_for_piece(index):
             raise Refusal('PIECE_HASH_MISMATCH')
         self.handle.piece_priority(index,0)
         return data
