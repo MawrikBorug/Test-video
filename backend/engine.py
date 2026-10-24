@@ -68,6 +68,9 @@ class Torrent:
             if not f:raise Refusal('RESEARCH_FILE_MAP_MISMATCH')
             self.file=f
         else:self.file=choose_file(files,season,episode,claimed)
+        priorities=[0]*self.fs.num_files();priorities[self.file['index']]=1
+        self.handle.prioritize_files(priorities)
+        self.handle.set_flags(lt.torrent_flags.sequential_download)
         self.offset=self.fs.file_offset(self.file['index']);self.selected_at=time.time()
         return self.file
 
@@ -95,7 +98,7 @@ class Torrent:
         # libtorrent hash-checks every received piece before have_piece/read_piece.
         if hashlib.sha1(data).digest()!=self.ti.hash_for_piece(index):
             raise Refusal('PIECE_HASH_MISMATCH')
-        self.handle.piece_priority(index,0)
+        self.handle.piece_priority(index,1)
         return data
 
     def read(self,start,end):

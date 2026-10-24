@@ -39,6 +39,7 @@ class TorrentPipeline(unittest.IsolatedAsyncioTestCase):
         self.assertTrue(sh.status().is_seeding)
         magnet='magnet:?xt=urn:btih:'+str(ti.info_hashes().v1)
         t=Torrent(magnet,root/'receive',metadata=meta,network=False)
+        t.handle.set_download_limit(512*1024)
         try:
             t.handle.connect_peer(('127.0.0.1',seed_session.listen_port()))
             selected=await t.select(1,2,claimed=1)
